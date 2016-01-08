@@ -12,7 +12,7 @@ public abstract class Board {
     public Board(int width, int height) {
 
         zones = new Zone[width][height];
-        
+
     }
 
 }
