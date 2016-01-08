@@ -8,10 +8,10 @@ public class FactionFactoryOfFactory extends FactoryOfFactory<Factory<Faction, S
     @Override
     public Factory<Faction, String> getInstance(String type) {
         switch (type) {
-            case "Zombies Land":
+            case "zombies-land":
                 return new ZombiesLandFactory();
             default:
-                return null;
+                throw new RuntimeException("Unknown FactionFactoryOfFactory");
         }
     }
 }
