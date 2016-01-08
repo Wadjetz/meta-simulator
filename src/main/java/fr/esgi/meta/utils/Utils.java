@@ -1,4 +1,4 @@
-package fr.esgi.meta.pattern;
+package fr.esgi.meta.utils;
 
 /**
  * Created by vuzi on 07/01/2016.

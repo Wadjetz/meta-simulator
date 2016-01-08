@@ -1,4 +1,6 @@
-package fr.esgi.meta.simulator.zombiland;
+package fr.esgi.meta.zombiland.item;
+
+import fr.esgi.meta.simulator.Item;
 
 /**
  * Created by vuzi on 07/01/2016.

@@ -1,4 +1,4 @@
-package fr.esgi.meta.simulator.zombiland;
+package fr.esgi.meta.simulator;
 
 import java.util.List;
 import java.util.stream.Collectors;

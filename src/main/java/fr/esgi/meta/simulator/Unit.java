@@ -9,25 +9,13 @@ import java.util.List;
  */
 public abstract class Unit {
 
-    private List<Faction> factions;
+    private Faction faction;
 
-    public void addFaction(Faction faction) {
-        factions.add(faction);
+    public Faction getFaction() {
+        return faction;
     }
 
-    public void removeFaction(Faction faction) {
-        factions.remove(faction);
-    }
-
-    public List<Faction> getFactions() {
-        return factions;
-    }
-
-    public void setFactions(List<Faction> factions) {
-        this.factions = factions;
-    }
-
-    public boolean hasFaction(Faction faction) {
-        return this.factions.contains(faction);
+    public void setFaction(Faction faction) {
+        this.faction = faction;
     }
 }
