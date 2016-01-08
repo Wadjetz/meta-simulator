@@ -1,1 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<simulation name="Zombies Land">
+    <factions>
+        <faction type="zombies">
+            <unit type="zombie" role="leader" name="Zombie Lord"/>
+            <unit type="zombie" role="member" number="13" />
+        </faction>
+        <faction type="survivors">
+            <unit type="human" role="leader">
+                <item type="shotgun" ammunition="5"/>
+                <item type="leather armor"/>
+            </unit>
+            <unit type="human" role="member" number="2">
+                <item type="pistol" />
+            </unit>
+            <unit type="human" role="member" number="2">
+                <item type="rifle" ammunition="15" />
+            </unit>
+        </faction>
+        <faction type="cannibals">
+            <unit type="human" role="leader">
+                <item type="axe" ammunition="5"/>
+            </unit>
+            <unit type="human" role="member" number="4">
+                <item type="machete" />
+            </unit>
+            <unit type="human" role="member" number="2">
+                <item type="knife" />
+            </unit>
+        </faction>
+        <faction type="bandits">
+            <unit type="human" role="leader">
+                <item type="machine gun" ammunition="5"/>
+            </unit>
+            <unit type="human" role="member" number="4">
+                <item type="pistol" />
+            </unit>
+        </faction>
+    </factions>
+    <board width="20" height="20">
+
+    </board>
+</simulation>
