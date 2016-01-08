@@ -46,20 +46,20 @@ public class Parser {
         return simulator;
     }
 
-    public List<Faction> parseFactions(NodeList list, Factory<Faction, String> factory) {
-        ArrayList<Faction> factions = new ArrayList<>();
-        int length = list.getLength();
+    public <T> List<T> parseListNodes(NodeList nodeList, Utils.Function<Node, T> f) {
+        ArrayList<T> list = new ArrayList<>();
+        int length = nodeList.getLength();
         for (int i=0; i<length; i++) {
-            Node n = list.item(i);
+            Node n = nodeList.item(i);
             if (n.getNodeType() == Node.ELEMENT_NODE) {
-                String tagName = n.getNodeName();
-                //System.out.println(tagName);
-                if (tagName.equals("faction")) {
-                    factions.add(parseFaction(n, factory));
-                }
+                list.add(f.apply(n));
             }
         }
-        return factions;
+        return list;
+    }
+
+    public List<Faction> parseFactions(NodeList list, Factory<Faction, String> factory) {
+        return this.<Faction>parseListNodes(list, (n) -> parseFaction(n, factory));
     }
 
     public Faction parseFaction(Node factionNode, Factory<Faction, String> factory) {
@@ -67,5 +67,15 @@ public class Parser {
         System.out.println("parseFaction - " + type);
         return factory.getInstance(type);
     }
-    
+
+    public List<Unit> parseUnits(NodeList list, Factory<Unit, String> factory) {
+        return this.<Unit>parseListNodes(list, (n) -> parseUnit(n, factory));
+    }
+
+    public Unit parseUnit(Node factionNode, Factory<Unit, String> factory) {
+        String type = factionNode.getAttributes().getNamedItem("type").getTextContent();
+        System.out.println("parseFaction - " + type);
+        return factory.getInstance(type);
+    }
+
 }
