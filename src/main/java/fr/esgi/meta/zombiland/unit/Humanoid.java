@@ -13,8 +13,6 @@ import java.util.List;
  */
 public abstract class Humanoid extends Unit implements HasInventory {
 
-    String name;
-
     List<Item> inventory;
 
     @Override

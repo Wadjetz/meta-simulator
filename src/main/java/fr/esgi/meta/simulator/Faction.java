@@ -1,5 +1,6 @@
 package fr.esgi.meta.simulator;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -40,5 +41,9 @@ public abstract class Faction {
 
     public void setLeader(Unit leader) {
         this.leader = leader;
+    }
+
+    public void addUnits(List<Unit> units) {
+        this.units.addAll(units);
     }
 }

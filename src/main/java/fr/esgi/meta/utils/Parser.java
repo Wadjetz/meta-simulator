@@ -37,7 +37,7 @@ public class Parser {
                 String tagName = n.getNodeName();
                 System.out.println(tagName);
                 if (tagName.equals("factions")) {
-                    List<Faction> faction = parseFactions(n.getChildNodes(), factionFactory);
+                    List<Faction> faction = parseFactions(n.getChildNodes(), factionFactory, simulatorType);
                     faction.stream().forEach(System.out::println);
                 }
             }
@@ -58,8 +58,20 @@ public class Parser {
         return list;
     }
 
-    public List<Faction> parseFactions(NodeList list, Factory<Faction, String> factory) {
-        return this.<Faction>parseListNodes(list, (n) -> parseFaction(n, factory));
+    public List<Faction> parseFactions(NodeList list, Factory<Faction, String> factory, String simulatorType) {
+        return this.<Faction>parseListNodes(list, (n) -> {
+            Faction faction = parseFaction(n, factory);
+
+            List<Unit> units = parseUnits(n.getChildNodes(), new UnitFactoryOfFactoty().getInstance(simulatorType));
+
+            units.stream().forEach(System.out::println);
+
+            System.out.println(units.size());
+
+            //faction.addUnits(units);
+
+            return faction;
+        });
     }
 
     public Faction parseFaction(Node factionNode, Factory<Faction, String> factory) {
@@ -72,10 +84,17 @@ public class Parser {
         return this.<Unit>parseListNodes(list, (n) -> parseUnit(n, factory));
     }
 
-    public Unit parseUnit(Node factionNode, Factory<Unit, String> factory) {
-        String type = factionNode.getAttributes().getNamedItem("type").getTextContent();
-        System.out.println("parseFaction - " + type);
-        return factory.getInstance(type);
+    public Unit parseUnit(Node unitNode, Factory<Unit, String> factory) {
+        String type = unitNode.getAttributes().getNamedItem("type").getTextContent();
+        Node name = unitNode.getAttributes().getNamedItem("name");
+        Unit u = factory.getInstance(type);
+        if (name != null) {
+            u.setName(name.getTextContent());
+        } else {
+            u.setName(type);
+        }
+        System.out.println("parseUnit - " + u);
+        return u;
     }
 
 }

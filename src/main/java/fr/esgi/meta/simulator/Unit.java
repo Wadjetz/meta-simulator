@@ -11,8 +11,18 @@ public abstract class Unit {
 
     private Faction faction;
 
+    private String name;
+
     public Faction getFaction() {
         return faction;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setFaction(Faction faction) {
