@@ -2,6 +2,7 @@ package fr.esgi.meta.simulator;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
 
@@ -9,6 +10,7 @@ public abstract class Faction {
     private String name;
     private Unit leader;
     private Set<Unit> units;
+    private Map<Faction, Double> affiliations;
 
     public Faction() {
         units = new HashSet<>();
@@ -68,5 +70,22 @@ public abstract class Faction {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Map<Faction, Double> getAffiliations() {
+        return affiliations;
+    }
+
+    public void setAffiliations(Map<Faction, Double> affiliations) {
+        this.affiliations = affiliations;
+    }
+
+    public double getAffiliation(Faction f) {
+        Double value = affiliations.get(f);
+        return value != null ? value : 0D;
+    }
+
+    public void setAffiliation(Faction f, double value) {
+        affiliations.put(f, value);
     }
 }
