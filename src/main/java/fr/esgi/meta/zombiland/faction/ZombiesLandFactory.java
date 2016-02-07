@@ -8,13 +8,13 @@ public class ZombiesLandFactory extends Factory<Faction, String> {
     public Faction getInstance(String type) {
         switch (type) {
             case "zombies":
-                return new ZombiesFaction();
+                return new ZombiesFaction(type);
             case "survivors":
-                return new SurvivorsFaction();
+                return new SurvivorsFaction(type);
             case "cannibals":
-                return new CannibalsFaction();
+                return new CannibalsFaction(type);
             case "bandits":
-                return new BanditsFaction();
+                return new BanditsFaction(type);
             default:
                 throw new RuntimeException("Unknown Faction");
         }
