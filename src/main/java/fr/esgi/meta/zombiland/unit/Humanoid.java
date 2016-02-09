@@ -6,17 +6,19 @@ import fr.esgi.meta.zombiland.item.Armor;
 import fr.esgi.meta.simulator.Item;
 import fr.esgi.meta.zombiland.item.Weapon;
 
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by vuzi on 07/01/2016.
- */
-public abstract class Humanoid extends Unit implements HasInventory {
+public abstract class Humanoid extends Unit implements HasInventory, HasLife {
 
-    List<Item> inventory;
+    private String name;
+    private List<Item> inventory;
 
     @Override
     public List<Item> getInventory() {
+        if(inventory == null)
+            inventory = new ArrayList<>();
+
         return inventory;
     }
 
@@ -38,5 +40,13 @@ public abstract class Humanoid extends Unit implements HasInventory {
 
     public void setArmors(List<Item> armors) {
         addItems(armors);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
