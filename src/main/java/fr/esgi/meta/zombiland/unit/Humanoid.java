@@ -1,13 +1,17 @@
-package fr.esgi.meta.simulator.zombiland;
+package fr.esgi.meta.zombiland.unit;
+
+import fr.esgi.meta.simulator.Unit;
+import fr.esgi.meta.simulator.HasInventory;
+import fr.esgi.meta.zombiland.item.Armor;
+import fr.esgi.meta.simulator.Item;
+import fr.esgi.meta.zombiland.item.Weapon;
 
 import java.util.List;
 
 /**
  * Created by vuzi on 07/01/2016.
  */
-public abstract class Humanoid implements HasInventory {
-
-    String name;
+public abstract class Humanoid extends Unit implements HasInventory {
 
     List<Item> inventory;
 

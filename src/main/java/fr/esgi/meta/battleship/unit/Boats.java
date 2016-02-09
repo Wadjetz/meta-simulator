@@ -1,4 +1,6 @@
-package fr.esgi.meta.simulator;
+package fr.esgi.meta.battleship.unit;
+
+import fr.esgi.meta.simulator.Unit;
 
 /**
  * Created by 626 on 07/01/2016.

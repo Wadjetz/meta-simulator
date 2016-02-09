@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<simulation name="Zombies Land">
+<simulation type="zombies-land">
     <factions>
         <faction type="zombies">
             <unit type="zombie" role="leader" name="Zombie Lord"/>
