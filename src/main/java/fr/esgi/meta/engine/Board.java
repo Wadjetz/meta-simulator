@@ -1,4 +1,4 @@
-package fr.esgi.meta.simulator;
+package fr.esgi.meta.engine;
 
 /**
  * Default board where units interact

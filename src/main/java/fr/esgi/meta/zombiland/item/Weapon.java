@@ -1,7 +1,7 @@
 package fr.esgi.meta.zombiland.item;
 
-import fr.esgi.meta.simulator.Item;
-import fr.esgi.meta.simulator.RandomValueGenerator;
+import fr.esgi.meta.engine.units.Item;
+import fr.esgi.meta.utils.RandomValueGenerator;
 
 /**
  * Weapon. A weapon is defined by its damages, its range
@@ -48,7 +48,7 @@ public class Weapon extends Item {
 
     @Override
     public String toString() {
-        return "Weapon(" + getName() + ", " + ammunition + ")";
+        return "Weapon(" + getType() + ", " + ammunition + ")";
     }
 }
 

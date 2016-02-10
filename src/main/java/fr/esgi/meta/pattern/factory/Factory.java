@@ -1,4 +1,4 @@
-package fr.esgi.meta.pattern;
+package fr.esgi.meta.pattern.factory;
 
 /**
  * Factory class.

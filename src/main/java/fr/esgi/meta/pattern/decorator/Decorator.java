@@ -1,8 +1,5 @@
-package fr.esgi.meta.pattern;
+package fr.esgi.meta.pattern.decorator;
 
-/**
- * Created by 626 on 07/01/2016.
- */
 public class Decorator {
 
     //-----------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 package fr.esgi.meta.zombiland.faction;
 
-import fr.esgi.meta.pattern.Factory;
-import fr.esgi.meta.simulator.Faction;
+import fr.esgi.meta.pattern.factory.Factory;
+import fr.esgi.meta.engine.Faction;
 
 public class ZombiesLandFactory extends Factory<Faction, String> {
     @Override

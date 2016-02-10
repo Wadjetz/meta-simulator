@@ -1,4 +1,6 @@
-package fr.esgi.meta.simulator;
+package fr.esgi.meta.engine;
+
+import fr.esgi.meta.engine.units.Unit;
 
 import java.util.List;
 

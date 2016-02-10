@@ -1,7 +1,7 @@
 package fr.esgi.meta.zombiland.item;
 
-import fr.esgi.meta.pattern.Factory;
-import fr.esgi.meta.simulator.Item;
+import fr.esgi.meta.pattern.factory.Factory;
+import fr.esgi.meta.engine.units.Item;
 
 public class ZombiesItemFactory extends Factory<Item, String> {
 

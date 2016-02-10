@@ -1,9 +1,11 @@
 package fr.esgi.meta.zombiland.unit;
 
-import fr.esgi.meta.simulator.Unit;
-import fr.esgi.meta.simulator.HasInventory;
+import fr.esgi.meta.pattern.strategy.BehaviourDefense;
+import fr.esgi.meta.pattern.strategy.BehaviourFight;
+import fr.esgi.meta.engine.units.Unit;
+import fr.esgi.meta.engine.units.HasInventory;
 import fr.esgi.meta.zombiland.item.Armor;
-import fr.esgi.meta.simulator.Item;
+import fr.esgi.meta.engine.units.Item;
 import fr.esgi.meta.zombiland.item.Weapon;
 
 import java.util.ArrayList;
@@ -13,6 +15,10 @@ public abstract class Humanoid extends Unit implements HasInventory, HasLife {
 
     private String name;
     private List<Item> inventory;
+
+    protected Humanoid(String type, BehaviourFight behaviourFight, BehaviourDefense behaviourDefense) {
+        super(type, behaviourFight, behaviourDefense);
+    }
 
     @Override
     public List<Item> getInventory() {
@@ -40,13 +46,5 @@ public abstract class Humanoid extends Unit implements HasInventory, HasLife {
 
     public void setArmors(List<Item> armors) {
         addItems(armors);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

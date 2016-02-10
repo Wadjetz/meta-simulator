@@ -1,7 +1,8 @@
-package fr.esgi.meta.simulator;
+package fr.esgi.meta.engine.factories;
 
-import fr.esgi.meta.pattern.Factory;
-import fr.esgi.meta.pattern.FactoryOfFactory;
+import fr.esgi.meta.pattern.factory.Factory;
+import fr.esgi.meta.pattern.factory.FactoryOfFactory;
+import fr.esgi.meta.engine.Faction;
 import fr.esgi.meta.zombiland.faction.ZombiesLandFactory;
 
 public class FactionFactoryOfFactory extends FactoryOfFactory<Factory<Faction, String>, String> {
