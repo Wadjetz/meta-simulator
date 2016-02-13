@@ -3,36 +3,36 @@
     <factions>
         <faction type="zombies">
             <unit type="zombie" role="leader" name="Zombie Lord"/>
-            <unit type="zombie" role="member" number="13" />
+            <unit type="zombie" role="member" quantity="13" />
         </faction>
         <faction type="survivors">
-            <unit type="human" role="leader">
+            <unit type="human" role="leader" name="Rick">
                 <item type="shotgun" ammunition="5"/>
                 <item type="leather armor"/>
             </unit>
-            <unit type="human" role="member" number="2">
+            <unit type="human" role="member" quantity="2">
                 <item type="pistol" />
             </unit>
-            <unit type="human" role="member" number="2">
+            <unit type="human" role="member" quantity="2">
                 <item type="rifle" ammunition="15" />
             </unit>
         </faction>
         <faction type="cannibals">
-            <unit type="human" role="leader">
+            <unit type="human" role="leader" name="Hannibal">
                 <item type="axe" ammunition="5"/>
             </unit>
-            <unit type="human" role="member" number="4">
+            <unit type="human" role="member" quantity="4">
                 <item type="machete" />
             </unit>
-            <unit type="human" role="member" number="2">
+            <unit type="human" role="member" quantity="2">
                 <item type="knife" />
             </unit>
         </faction>
         <faction type="bandits">
-            <unit type="human" role="leader">
+            <unit type="human" role="leader" name="Jack">
                 <item type="machine gun" ammunition="5"/>
             </unit>
-            <unit type="human" role="member" number="4">
+            <unit type="human" role="member" quantity="4">
                 <item type="pistol" />
             </unit>
         </faction>

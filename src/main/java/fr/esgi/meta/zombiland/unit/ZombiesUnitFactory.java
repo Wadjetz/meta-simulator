@@ -1,16 +1,16 @@
 package fr.esgi.meta.zombiland.unit;
 
-import fr.esgi.meta.pattern.Factory;
-import fr.esgi.meta.simulator.Unit;
+import fr.esgi.meta.pattern.factory.Factory;
+import fr.esgi.meta.engine.units.Unit;
 
 public class ZombiesUnitFactory extends Factory<Unit, String> {
     @Override
     public Unit getInstance(String type) {
         switch (type) {
             case "human":
-                return new Human();
+                return new Human(type, new FightWithWeapon(), new DefenseDefault());
             case "zombie":
-                return new Zombie();
+                return new Zombie(type, new FightEatBrain(), new DefenseDefault());
             default:
                 throw new RuntimeException("Unknown Zombies Unit");
         }

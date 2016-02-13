@@ -1,4 +1,7 @@
-package fr.esgi.meta.simulator;
+package fr.esgi.meta.engine.simulations;
+
+import fr.esgi.meta.engine.Board;
+import fr.esgi.meta.engine.Faction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,5 +54,7 @@ public abstract class Simulator {
 
     public void run() {
         System.out.println(name + " simulation run");
+        System.out.println(this);
+        getFactions().get(0).getUnits().get(0).figth(getFactions().get(1).getUnits().get(0));
     }
 }

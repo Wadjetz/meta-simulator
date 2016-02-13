@@ -1,21 +1,18 @@
 package fr.esgi.meta.battleship.unit;
 
-import fr.esgi.meta.simulator.Unit;
+import fr.esgi.meta.pattern.strategy.BehaviourDefense;
+import fr.esgi.meta.pattern.strategy.BehaviourFight;
+import fr.esgi.meta.engine.units.Unit;
 
-/**
- * Created by 626 on 07/01/2016.
- */
 public class Boats extends Unit {
 
     //Boat parameters
     private int life;
     private int damages;
-    private  String name;
 
-    public Boats(int life, int damages, String name) {
-        this.life = life;
-        this.damages = damages;
-        this.name = name;
+
+    protected Boats(String type, BehaviourFight behaviourFight, BehaviourDefense behaviourDefense) {
+        super(type, behaviourFight, behaviourDefense);
     }
 
     public int getLife() {
@@ -32,13 +29,5 @@ public class Boats extends Unit {
 
     public void setDamages(int damages) {
         this.damages = damages;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

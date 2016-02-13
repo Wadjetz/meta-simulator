@@ -1,7 +1,7 @@
 package fr.esgi.meta.zombiland.item;
 
-import fr.esgi.meta.simulator.Item;
-import fr.esgi.meta.simulator.RandomValueGenerator;
+import fr.esgi.meta.engine.units.Item;
+import fr.esgi.meta.utils.RandomValueGenerator;
 
 public class Armor extends Item {
     private enum ArmorPlacement {
@@ -24,5 +24,10 @@ public class Armor extends Item {
 
     public double computeDamage(double dmg) {
         return dmg - dmg * resistance.getValue();
+    }
+
+    @Override
+    public String toString() {
+        return "Armor(" + getType() + ", " + placement.toString() + ")";
     }
 }
