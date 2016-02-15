@@ -12,6 +12,7 @@ public class BoardFactory extends Board {
     public BoardFactory(int width, int height) {
         super(width, height);
     }
+
     public BoardFactory(String name,int width, int height) {
         super(width,height);
         switch (name) {

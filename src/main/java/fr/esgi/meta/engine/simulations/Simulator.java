@@ -10,9 +10,10 @@ import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 public abstract class Simulator {
-    private String name;
-    private Board board;
-    private List<Faction> factions;
+
+    protected String name;
+    protected Board board;
+    protected List<Faction> factions;
 
     public Simulator() {
         factions = new ArrayList<>();
