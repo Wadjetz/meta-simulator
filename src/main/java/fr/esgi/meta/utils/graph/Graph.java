@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.function.Predicate;
 
 /**
+ *
+ *
  * Created by Vuzi on 15/02/2016.
  */
 public class Graph {
@@ -16,7 +19,7 @@ public class Graph {
         this.entry = entry;
     }
 
-    public List<Vertex> shortestPath(Vertex start, Vertex destination) {
+    public List<Vertex> findNearest(Vertex start, Predicate<Vertex> vertexPredicate) {
         // List of path still possibles
         PriorityQueue<Path> vertexPriorityQueue = new PriorityQueue<>((o1, o2) -> {
             if(o1.distance > o2.distance)
@@ -33,14 +36,14 @@ public class Graph {
         vertexPriorityQueue.add(new Path(start, 0D, null));
 
         // Walk through all the graph
-        while(!vertexPriorityQueue.isEmpty() && !vertexPriorityQueue.peek().vertex.equals(destination)) {
+        while(!vertexPriorityQueue.isEmpty() && !vertexPredicate.test(vertexPriorityQueue.peek().vertex)) {
             Path current = vertexPriorityQueue.poll();
 
             for(Edge e : current.vertex.getAdjacencies()) {
                 Vertex target = e.getOtherSide(current.vertex);
 
-                if(verticesTraveled.contains(target))
-                    continue; // Do not go backward
+                if(!target.isEmpty() || verticesTraveled.contains(target))
+                    continue; // Ignore the vertex
 
                 double distanceThroughCurrent = current.distance + e.getWeight();
 
@@ -48,6 +51,10 @@ public class Graph {
                 verticesTraveled.add(target);
             }
         }
+
+        // No path found, return null
+        if(vertexPriorityQueue.isEmpty())
+            return null;
 
         // Reconstruct the path
         List<Vertex> shortestPathVertices = new ArrayList<>();
@@ -59,6 +66,10 @@ public class Graph {
         }
 
         return shortestPathVertices;
+    }
+
+    public List<Vertex> shortestPath(Vertex start, Vertex destination) {
+        return findNearest(start, vertex -> vertex.equals(destination));
     }
 
     private class Path {
