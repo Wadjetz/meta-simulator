@@ -60,6 +60,7 @@ public abstract class Faction {
         }
         sj.add("Units");
         units.stream().forEach(u -> sj.add(u.toString()));
+        sj.add(", aff=" + affiliations.size());
         return sj.toString();
     }
 
