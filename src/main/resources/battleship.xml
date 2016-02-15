@@ -2,7 +2,7 @@
 <simulation type="BattleShip">
     <factions>
         <faction type="Allie">
-            <unit type="porte-avions" role="leader" name="stallin">
+            <unit type="porte-avions" role="leader" name="stallin" life="500">
                 <item type="porte-avions" ammunition="0"/>
             </unit>
             <unit type="croiseur" role="member" name="croiseur" quantity="1">

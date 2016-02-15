@@ -45,14 +45,14 @@ public class SimulatorParser {
                     simulator.setFactions(factions);
                 }
                 if (tagName.equals("board")) {
-                    simulator.setBoard( getIntAttribute(n, "width").flatMap(width ->
+                    Board board = getIntAttribute(n, "width").flatMap(width ->
                             getIntAttribute(n, "height").map(height ->
                                 new BoardFactory(simulatorType,width, height)
                             )
                     ).orElseThrow(() ->
                             new RuntimeException("Board not found " + n.toString())
-                    )
                     );
+                    simulator.setBoard(board);
                 }
             }
         }
