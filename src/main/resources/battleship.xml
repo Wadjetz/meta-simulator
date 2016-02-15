@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<simulation type="BattleShip">
+    <factions>
+        <faction type="Allie">
+            <unit type="porte-avions" role="leader" name="stallin">
+                <item type="porte-avions" ammunition="0"/>
+            </unit>
+            <unit type="croiseur" role="member" name="croiseur" quantity="1">
+                <item type="grenade" ammunition="5"/>
+            </unit>
+            <unit type="sous-marin" role="leader" name="sous-marin" quantity="1">
+                <item type="torpille" ammunition="5"/>
+            </unit>
+            <unit type="fregate" role="member" name="fregate" quantity="1">
+                <item type="missile" ammunition="5"/>
+            </unit>
+        </faction>
+        <faction type="Axe">
+            <unit type="porte-avions" role="leader" name="hitler">
+                <item type="porte-avions" ammunition="0"/>
+            </unit>
+            <unit type="croiseur" role="member" name="croiseur" quantity="1">
+                <item type="grenade" ammunition="5"/>
+            </unit>
+            <unit type="sous-marin" role="leader" name="sous-marin" quantity="1">
+                <item type="torpille" ammunition="5"/>
+            </unit>
+            <unit type="fregate" role="member" name="fregate" quantity="1">
+                <item type="missile" ammunition="5"/>
+            </unit>
+        </faction>
+    </factions>
+    <board width="20" height="10">
+
+    </board>
+</simulation>

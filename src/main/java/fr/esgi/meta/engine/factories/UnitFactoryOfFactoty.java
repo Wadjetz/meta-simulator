@@ -1,5 +1,6 @@
 package fr.esgi.meta.engine.factories;
 
+import fr.esgi.meta.battleship.unit.BoatUnitFactory;
 import fr.esgi.meta.pattern.factory.Factory;
 import fr.esgi.meta.engine.units.Unit;
 import fr.esgi.meta.zombiland.unit.ZombiesUnitFactory;
@@ -10,6 +11,8 @@ public class UnitFactoryOfFactoty extends Factory<Factory<Unit, String>, String>
         switch (type) {
             case "zombies-land":
                 return new ZombiesUnitFactory();
+            case "BattleShip":
+                return new BoatUnitFactory();
             default:
                 throw new RuntimeException("Unknown Units Factory");
         }
