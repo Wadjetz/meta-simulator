@@ -2,6 +2,7 @@ package fr.esgi.meta.engine;
 
 import fr.esgi.meta.engine.units.Unit;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ import java.util.List;
  */
 public class Zone {
 
-    List<Unit> units;
+    List<Unit> units = new ArrayList<>();
 
     int x, y;
 

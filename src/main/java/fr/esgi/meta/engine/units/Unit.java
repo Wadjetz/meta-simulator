@@ -1,8 +1,10 @@
 package fr.esgi.meta.engine.units;
 
 import fr.esgi.meta.engine.Faction;
+import fr.esgi.meta.pattern.state.State;
 import fr.esgi.meta.pattern.strategy.BehaviourDefense;
 import fr.esgi.meta.pattern.strategy.BehaviourFight;
+import fr.esgi.meta.zombiland.unit.DeadUnitState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,8 @@ public abstract class Unit implements Fighter, Defenser {
 
     protected BehaviourFight behaviourFight;
     protected BehaviourDefense behaviourDefense;
+
+    private State state;
 
     private String type;
 
@@ -95,5 +99,13 @@ public abstract class Unit implements Fighter, Defenser {
     @Override
     public void figth(Unit enemy) {
         this.behaviourFight.fight(this, enemy);
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 }
