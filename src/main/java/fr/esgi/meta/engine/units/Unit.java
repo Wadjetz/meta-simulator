@@ -3,6 +3,7 @@ package fr.esgi.meta.engine.units;
 import fr.esgi.meta.engine.Board;
 import fr.esgi.meta.engine.Faction;
 import fr.esgi.meta.engine.Zone;
+import fr.esgi.meta.engine.Zone;
 import fr.esgi.meta.pattern.state.State;
 import fr.esgi.meta.pattern.strategy.BehaviourDefense;
 import fr.esgi.meta.pattern.strategy.BehaviourDisplacement;
