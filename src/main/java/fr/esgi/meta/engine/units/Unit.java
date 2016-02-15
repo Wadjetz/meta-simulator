@@ -8,11 +8,13 @@ import fr.esgi.meta.pattern.state.State;
 import fr.esgi.meta.pattern.strategy.BehaviourDefense;
 import fr.esgi.meta.pattern.strategy.BehaviourDisplacement;
 import fr.esgi.meta.pattern.strategy.BehaviourFight;
+import fr.esgi.meta.utils.graph.Edge;
 import fr.esgi.meta.utils.graph.Vertex;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Default unit in the simulation.
@@ -133,5 +135,9 @@ public abstract class Unit implements Fighter, Defenser {
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    public List<Unit> getNeighborsUnits() {
+        return zone.getAdjacencies().stream().map(edge -> (Zone)edge.getOtherSide(zone)).filter(Zone::hasUnit).map(Zone::getUnit).collect(Collectors.toList());
     }
 }

@@ -5,6 +5,9 @@ import fr.esgi.meta.engine.Faction;
 import fr.esgi.meta.engine.Zone;
 import fr.esgi.meta.engine.units.Unit;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
@@ -56,25 +59,33 @@ public abstract class Simulator {
         return sj.toString();
     }
 
-    public void run() {
+    public void run() throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        int turn = 1;
         System.out.println(name + " simulation run");
         System.out.println(this);
 
         List<Unit> allUnits = factions.stream().<Unit>flatMap(f -> f.getUnits().stream()).collect(Collectors.toList());
         board.randomDispatch(allUnits);
-        System.out.println(board);
 
+        System.out.println("Turn " + turn + " ------------------------------------------------------");
+        System.out.println(board);
 
         for(Faction faction : factions) {
             for(Unit unit : faction.getUnits()) {
                 // Move the unit on the board
-                //Zone unitZone = unit.move(board);
+                unit.move(board);
 
-                // Attack every other unit in the zone
-                //unitZone.getUnits().forEach(unit::figth);
+                // Attack every other unit in the neighbors zones
+                unit.getNeighborsUnits().forEach(unit::figth);
             }
         }
 
-        getFactions().get(0).getUnits().get(0).figth(getFactions().get(1).getUnits().get(0));
+        // Enter to continue..
+        br.readLine();
+
+
+        //getFactions().get(0).getUnits().get(0).figth(getFactions().get(1).getUnits().get(0));
     }
 }
