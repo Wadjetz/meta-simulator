@@ -1,7 +1,5 @@
 package fr.esgi.meta.utils;
 
-import fr.esgi.meta.pattern.Singleton;
-
 import java.util.Random;
 
 /**
@@ -22,7 +20,7 @@ public class RandomValueGenerator {
     }
 
     public static int get(int min, int max) {
-        return new Random().nextInt(max);
+        return min + new Random().nextInt(max - min);
     }
 
     public double getValue() {

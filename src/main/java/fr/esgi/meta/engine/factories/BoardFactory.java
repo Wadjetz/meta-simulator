@@ -1,30 +1,21 @@
 package fr.esgi.meta.engine.factories;
 
-import fr.esgi.meta.battleship.unit.BattleShipBorad;
+import fr.esgi.meta.battleship.unit.BattleShipBoard;
 import fr.esgi.meta.engine.Board;
-import fr.esgi.meta.engine.units.Unit;
+import fr.esgi.meta.pattern.factory.Factory;
 import fr.esgi.meta.zombiland.ZombieBoard;
 
-import java.util.List;
+public class BoardFactory extends Factory<Board, String> {
 
-/**
- * Created by 626 on 15/02/2016.
- */
-public class BoardFactory extends Board {
-
-    public BoardFactory(int width, int height) {
-        super(width, height);
-    }
-
-    public BoardFactory(String name,int width, int height) {
-        super(width,height);
-        switch (name) {
+    @Override
+    public Board getInstance(String type) {
+        switch (type) {
             case "zombies-land":
-                new ZombieBoard(width,height);
+                return new ZombieBoard();
             case "BattleShip":
-                new BattleShipBorad(width,height);
+                return new BattleShipBoard();
             default:
-                 new RuntimeException("Unknown Simulation");
+                throw new RuntimeException("Unknown Simulation");
         }
     }
 }

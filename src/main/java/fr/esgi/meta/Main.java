@@ -1,8 +1,13 @@
 package fr.esgi.meta;
 
+import fr.esgi.meta.engine.simulations.Simulator;
+import fr.esgi.meta.utils.SimulatorParser;
 import fr.esgi.meta.utils.graph.Edge;
 import fr.esgi.meta.utils.graph.Graph;
 import fr.esgi.meta.utils.graph.Vertex;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.List;
 
@@ -68,13 +73,13 @@ public class Main {
 
         System.out.println(getCoefDirector(0, 0, 1, 4));
 
-
+        */
         System.out.println("Meta Simulation");
         try {
-            Simulator simulator = new SimulatorParser().parse("zombies.xml");
+            Simulator simulator = new SimulatorParser().parse("battleship.xml");
             simulator.run();
         } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 }
