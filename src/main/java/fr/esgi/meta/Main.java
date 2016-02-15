@@ -75,7 +75,7 @@ public class Main {
         */
         System.out.println("Meta Simulation");
         try {
-            Simulator simulator = new SimulatorParser().parse("battleship.xml");
+            Simulator simulator = new SimulatorParser().parse("zombies.xml");
             simulator.run();
         } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();

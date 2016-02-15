@@ -16,7 +16,7 @@ public class ZombieBoard extends Board {
 
             System.out.println("randomDispatch x=" + x + " y=" + y);
 
-            getZones()[x][y].addUnit(unit);
+            //getZones()[x][y].addUnit(unit);
         }
     }
 

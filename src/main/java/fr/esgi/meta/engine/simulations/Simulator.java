@@ -68,10 +68,10 @@ public abstract class Simulator {
         for(Faction faction : factions) {
             for(Unit unit : faction.getUnits()) {
                 // Move the unit on the board
-                Zone unitZone = unit.move(board);
+                //Zone unitZone = unit.move(board);
 
                 // Attack every other unit in the zone
-                unitZone.getUnits().forEach(unit::figth);
+                //unitZone.getUnits().forEach(unit::figth);
             }
         }
 

@@ -1,26 +1,36 @@
 package fr.esgi.meta.engine;
 
+import fr.esgi.meta.utils.graph.Edge;
+import fr.esgi.meta.utils.graph.Graph;
+
 import fr.esgi.meta.engine.units.Unit;
 
 import java.util.List;
 import java.util.StringJoiner;
-import java.util.stream.Collectors;
 
 
 /**
  * Default board where units interact
  */
-public abstract class Board {
+public abstract class Board extends Graph {
     int width = 0;
     int height = 0;
     Zone[][] zones;
 
-
     public Board() {
-
+        super(null);
     }
 
     public Board(int width, int height) {
+        super(null);
+        zones = new Zone[width][height];
+
+        // Create every zone
+        for(int i = 0; i < width; i++) {
+            for(int j = 0; j < height; j++) {
+                zones[i][j] = new Zone(i, j);
+            }
+        }
         this.width = width;
         this.height = height;
         init();
@@ -28,10 +38,21 @@ public abstract class Board {
 
     public void init() {
         System.out.println("Board init width=" + width + " height=" + height);
-        zones = new Zone[height][width];
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                zones[i][j] = new Zone();
+        zones = new Zone[width][height];
+
+        // Create every zone
+        for(int i = 0; i < width; i++) {
+            for(int j = 0; j < height; j++) {
+                zones[i][j] = new Zone(i, j);
+            }
+        }
+
+        // Create the edges
+        for(int i = 0; i < width - 1; i++) {
+            for(int j = 0; j < height - 1; j++) {
+                new Edge(zones[i][j], zones[i + 1][j], 1.0);
+                new Edge(zones[i][j], zones[i][j + 1], 1.0);
+                new Edge(zones[i][j], zones[i + 1][j], 1.0);
             }
         }
     }
@@ -48,24 +69,7 @@ public abstract class Board {
 
     @Override
     public String toString() {
-        StringJoiner sj = new StringJoiner("");
-
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                Zone z = zones[x][y];
-                int t = 3;
-
-                String n = z.getUnits().stream().<String>map(u -> u.getType().charAt(0) + "").collect(Collectors.joining());
-                int padding = (t - n.length());
-                sj.add("|");
-                sj.add(n);
-                sj.add(spaces(padding));
-            }
-            sj.add("\n");
-        }
-
-
-        return "Board"; // sj.toString();
+        return "Board";
     }
 
     public int getWidth() {
@@ -84,11 +88,4 @@ public abstract class Board {
         this.height = height;
     }
 
-    public Zone[][] getZones() {
-        return zones;
-    }
-
-    public void setZones(Zone[][] zones) {
-        this.zones = zones;
-    }
 }

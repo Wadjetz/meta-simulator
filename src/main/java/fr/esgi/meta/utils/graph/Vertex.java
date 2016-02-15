@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Vertex class
+ *
  * Created by Vuzi on 15/02/2016.
  */
 public class Vertex {
@@ -20,7 +22,11 @@ public class Vertex {
     public Vertex(int x, int y) {
         this.x = x;
         this.y = y;
-        adjacencies = new ArrayList<Edge>();
+        adjacencies = new ArrayList<>();
+    }
+
+    public boolean isEmpty() {
+        return true;
     }
 
     public String getId() {
@@ -49,6 +55,10 @@ public class Vertex {
 
     public void setAdjacencies(List<Edge> adjacencies) {
         this.adjacencies = adjacencies;
+    }
+
+    public double distanceFrom(Vertex otherVertex) {
+        return Math.sqrt(Math.pow(otherVertex.getX() - getX(), 2) + Math.pow(otherVertex.getY() - getY(), 2));
     }
 
     @Override
