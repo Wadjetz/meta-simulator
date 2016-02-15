@@ -47,4 +47,12 @@ public class Zone {
     public void setUnits(List<Unit> units) {
         this.units = units;
     }
+
+    public double distanceFrom(Zone otherZone) {
+        return Math.sqrt(Math.pow(otherZone.getX() - getX(), 2) + Math.pow(otherZone.getY() - getY(), 2));
+    }
+
+    public double getCoefDirector(Zone otherZone) {
+        return (getX() - otherZone.getX()) / (getY() - otherZone.getY());
+    }
 }

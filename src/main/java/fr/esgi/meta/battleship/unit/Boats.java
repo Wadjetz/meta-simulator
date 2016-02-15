@@ -6,7 +6,7 @@ import fr.esgi.meta.pattern.strategy.BehaviourDefense;
 import fr.esgi.meta.pattern.strategy.BehaviourFight;
 import fr.esgi.meta.engine.units.Unit;
 
-public class Boats extends Unit implements Observable{
+public class Boats extends Unit implements Observable {
 
     //Boat parameters
     private int life;
@@ -14,7 +14,7 @@ public class Boats extends Unit implements Observable{
 
 
     protected Boats(String type, BehaviourFight behaviourFight, BehaviourDefense behaviourDefense) {
-        super(type, behaviourFight, behaviourDefense);
+        super(type, behaviourFight, behaviourDefense, null);
 
         switch (type) {
             case "porte-avions":
