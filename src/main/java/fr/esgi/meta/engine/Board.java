@@ -1,12 +1,11 @@
 package fr.esgi.meta.engine;
 
 import fr.esgi.meta.engine.units.Unit;
-import fr.esgi.meta.utils.RandomValueGenerator;
 
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
-import java.util.Random;
+
 
 /**
  * Default board where units interact
