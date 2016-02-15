@@ -7,12 +7,9 @@ import fr.esgi.meta.utils.RandomValueGenerator;
 import java.util.List;
 
 public class ZombieBoard extends Board {
-    public ZombieBoard(int width, int height) {
-        super(width, height);
-    }
-
     @Override
     public void randomDispatch(List<Unit> units) {
+        System.out.println("ZombieBoard.randomDispatch");
         for (Unit unit : units) {
             int x = RandomValueGenerator.get(1, getWidth());
             int y = RandomValueGenerator.get(1, getHeight());

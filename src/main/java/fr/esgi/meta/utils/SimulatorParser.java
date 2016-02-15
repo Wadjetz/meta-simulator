@@ -46,9 +46,13 @@ public class SimulatorParser {
                 }
                 if (tagName.equals("board")) {
                     Board board = getIntAttribute(n, "width").flatMap(width ->
-                            getIntAttribute(n, "height").map(height ->
-                                new BoardFactory(simulatorType,width, height)
-                            )
+                            getIntAttribute(n, "height").map(height -> {
+                                Board b = new BoardFactory().getInstance(simulatorType);
+                                b.setWidth(width);
+                                b.setHeight(height);
+                                b.init();
+                                return b;
+                            })
                     ).orElseThrow(() ->
                             new RuntimeException("Board not found " + n.toString())
                     );

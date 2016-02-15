@@ -3,6 +3,7 @@ package fr.esgi.meta.engine;
 import fr.esgi.meta.engine.units.Unit;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class Faction {
     private String name;

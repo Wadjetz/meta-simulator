@@ -55,4 +55,9 @@ public class Zone {
     public double getCoefDirector(Zone otherZone) {
         return (getX() - otherZone.getX()) / (getY() - otherZone.getY());
     }
+
+    @Override
+    public String toString() {
+        return "Zone(" + x + ", " + y + ", " + units.toString() + ")";
+    }
 }
