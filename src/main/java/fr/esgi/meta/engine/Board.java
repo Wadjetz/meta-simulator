@@ -12,6 +12,8 @@ import java.util.List;
  */
 public abstract class Board {
 
+    public  Board(){}
+
     Zone[][] zones;
     int width = 0;
     int height = 0;
