@@ -35,7 +35,7 @@ public interface BehaviourDisplacement {
 
         if(!toGo.equals(currentZone)) {
             System.out.println(me.getName() + " has moved from " + currentZone + " to " + toGo);
-            currentZone.setUnit(null);
+            currentZone.setUnit(Optional.empty());
             toGo.setUnit(Optional.of(me));
             me.setZone(toGo);
         } else
