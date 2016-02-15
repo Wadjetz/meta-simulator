@@ -138,6 +138,11 @@ public abstract class Unit implements Fighter, Defenser {
     }
 
     public List<Unit> getNeighborsUnits() {
-        return zone.getAdjacencies().stream().map(edge -> (Zone)edge.getOtherSide(zone)).filter(Zone::hasUnit).map(Zone::getUnit).collect(Collectors.toList());
+        return zone.getAdjacencies()
+                .stream()
+                .map(edge -> (Zone)edge.getOtherSide(zone))
+                .filter(z -> z.getUnit().isPresent())
+                .map(z -> z.getUnit().get())
+                .collect(Collectors.toList());
     }
 }

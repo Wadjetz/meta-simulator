@@ -3,6 +3,8 @@ package fr.esgi.meta.engine;
 import fr.esgi.meta.engine.units.Unit;
 import fr.esgi.meta.utils.graph.Vertex;
 
+import java.util.Optional;
+
 /**
  * Zone of the board.
  *
@@ -10,26 +12,22 @@ import fr.esgi.meta.utils.graph.Vertex;
  */
 public class Zone extends Vertex {
 
-    Unit unit;
+    Optional<Unit> unit = Optional.empty();
 
     public Zone(int x, int y) {
         super("" + x + ":" + y, x, y);
     }
 
-    public boolean hasUnit() {
-        return unit != null;
-    }
-
-    public Unit getUnit() {
+    public Optional<Unit> getUnit() {
         return unit;
     }
 
-    public void setUnit(Unit unit) {
-        if(unit != null) {
+    public void setUnit(Optional<Unit> unit) {
+        if(unit.isPresent()) {
             this.unit = unit;
-            this.unit.setZone(this);
+            this.unit.get().setZone(this);
         } else
-            this.unit = null;
+            this.unit = Optional.empty();
     }
 
     @Override

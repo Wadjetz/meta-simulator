@@ -5,6 +5,7 @@ import fr.esgi.meta.engine.units.Unit;
 import fr.esgi.meta.utils.RandomValueGenerator;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ZombieBoard extends Board {
     @Override
@@ -16,7 +17,7 @@ public class ZombieBoard extends Board {
 
             System.out.println("randomDispatch x=" + x + " y=" + y);
 
-            getZones()[x][y].setUnit(unit);
+            getZones()[x][y].setUnit(Optional.of(unit));
         }
     }
 
