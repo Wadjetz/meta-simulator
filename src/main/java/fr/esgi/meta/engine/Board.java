@@ -15,10 +15,6 @@ public abstract class Board {
 
     public  Board(){}
 
-    public Zone[][] getZones() {
-        return zones;
-    }
-
     Zone[][] zones;
 
     public int getWidth() {
@@ -33,6 +29,7 @@ public abstract class Board {
     int height = 0;
 
     public Board(int width, int height) {
+        zones = new Zone[width][height];
         System.out.println("Board width=" + width + " height=" + height);
         this.width = width;
         this.height = height;
@@ -69,21 +66,21 @@ public abstract class Board {
         int y =0;
         Random rand = new Random();
 
-       if(unit.getFaction().getLeader().get().getFaction().getName().equals("Allie")){
+        if(unit.getFaction().getLeader().get().getFaction().getName().equals("Allie")){
             x = rand.nextInt(width - 1 + 1) + 1;
             y = rand.nextInt(height - 1 + 1);
-       }
+        }
         else{
-           x = rand.nextInt(width - (width/2) + 1) + (width/2);
-           y = rand.nextInt(height - 1 + 1);
-       }
+            x = rand.nextInt(width - (width/2) + 1) + (width/2);
+            y = rand.nextInt(height - 1 + 1);
+        }
 
         System.out.println(unit.getFaction().getLeader().get().getFaction().getName()+"  randomDispatch x=" + x + " y=" + y);
 
         zones[y][x].addUnit(unit);
     }
-    @Override
-    public String toString() {
-        return "Board " + zones.toString();
+
+    public Zone[][] getZones() {
+        return zones;
     }
 }

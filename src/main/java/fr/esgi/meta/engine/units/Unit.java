@@ -1,10 +1,12 @@
 package fr.esgi.meta.engine.units;
 
+import fr.esgi.meta.engine.Board;
 import fr.esgi.meta.engine.Faction;
+import fr.esgi.meta.engine.Zone;
 import fr.esgi.meta.pattern.state.State;
 import fr.esgi.meta.pattern.strategy.BehaviourDefense;
+import fr.esgi.meta.pattern.strategy.BehaviourDisplacement;
 import fr.esgi.meta.pattern.strategy.BehaviourFight;
-import fr.esgi.meta.zombiland.unit.DeadUnitState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,7 @@ public abstract class Unit implements Fighter, Defenser {
 
     protected BehaviourFight behaviourFight;
     protected BehaviourDefense behaviourDefense;
+    protected BehaviourDisplacement behaviourDisplacement;
 
     private State state;
 
@@ -30,10 +33,12 @@ public abstract class Unit implements Fighter, Defenser {
 
     private int quantity = 1;
 
-    protected Unit(String type, BehaviourFight behaviourFight, BehaviourDefense behaviourDefense) {
+    protected Unit(String type, BehaviourFight behaviourFight, BehaviourDefense behaviourDefense,
+                   BehaviourDisplacement behaviourDisplacement) {
         this.type = type;
         this.behaviourFight = behaviourFight;
         this.behaviourDefense = behaviourDefense;
+        this.behaviourDisplacement = behaviourDisplacement;
     }
 
     public List<Item> getItems() {
@@ -97,8 +102,40 @@ public abstract class Unit implements Fighter, Defenser {
     }
 
     @Override
-    public void figth(Unit enemy) {
-        this.behaviourFight.fight(this, enemy);
+    public void figth(Unit otherUnit) {
+        if(getFaction().getAffiliation(otherUnit.getFaction()) < 0)
+            this.behaviourFight.fight(this, otherUnit);
+    }
+
+    public Zone move(Board board) {
+        Zone selfZone = null;
+        Zone enemyZone = null;
+
+        for(int i = 0; i < board.getZones().length; i++) {
+            for(int j = 0; j < board.getZones()[i].length; j++) {
+                for(Unit unit : board.getZones()[i][j].getUnits()) {
+                    if(unit.equals(this)) {
+                        // Self
+                        selfZone = board.getZones()[i][j];
+                    } else if(getFaction().getAffiliation(unit.getFaction()) < 0) {
+                        // Enemy
+                        if(enemyZone == null || enemyZone.distanceFrom(selfZone) < board.getZones()[i][j]
+                                .distanceFrom(selfZone)) {
+                            enemyZone = board.getZones()[i][j];
+                        }
+                    } else {
+                        // Neutral or friendly
+                        // Nothing for now
+                    }
+                }
+            }
+        }
+
+        // If any enemy zone is found
+        if(enemyZone != null)
+            this.behaviourDisplacement.displace(this, board, selfZone, enemyZone);
+
+        return selfZone;
     }
 
     public State getState() {

@@ -2,6 +2,7 @@ package fr.esgi.meta.engine.simulations;
 
 import fr.esgi.meta.engine.Board;
 import fr.esgi.meta.engine.Faction;
+import fr.esgi.meta.engine.Zone;
 import fr.esgi.meta.engine.units.Unit;
 
 import java.util.ArrayList;
@@ -62,6 +63,17 @@ public abstract class Simulator {
         List<Unit> allUnits = factions.stream().<Unit>flatMap(f -> f.getUnits().stream()).collect(Collectors.toList());
         board.randomDispatch(allUnits);
         System.out.println(board);
+
+
+        for(Faction faction : factions) {
+            for(Unit unit : faction.getUnits()) {
+                // Move the unit on the board
+                Zone unitZone = unit.move(board);
+
+                // Attack every other unit in the zone
+                unitZone.getUnits().forEach(unit::figth);
+            }
+        }
 
         getFactions().get(0).getUnits().get(0).figth(getFactions().get(1).getUnits().get(0));
     }
