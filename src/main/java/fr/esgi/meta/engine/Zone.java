@@ -22,6 +22,11 @@ public class Zone extends Vertex {
         return unit;
     }
 
+    @Override
+    public boolean isEmpty() {
+        return unit.isPresent();
+    }
+
     public void setUnit(Optional<Unit> unit) {
         if(unit.isPresent()) {
             this.unit = unit;
