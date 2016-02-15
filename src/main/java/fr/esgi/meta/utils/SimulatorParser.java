@@ -6,7 +6,6 @@ import fr.esgi.meta.engine.units.Item;
 import fr.esgi.meta.engine.units.Unit;
 import fr.esgi.meta.pattern.factory.Factory;
 import fr.esgi.meta.engine.*;
-import fr.esgi.meta.zombiland.ZombieBoard;
 import fr.esgi.meta.zombiland.item.Weapon;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -17,9 +16,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class SimulatorParser {
     public Simulator parse(String fileName) throws ParserConfigurationException, IOException, SAXException {
@@ -36,14 +34,34 @@ public class SimulatorParser {
         Simulator simulator = new SimulatorFactory().getInstance(simulatorType);
         simulator.setName(simulatorType);
 
+        List<Faction> factions = new ArrayList<>();
+
         for (int i=0; i<length; i++) {
             Node n = list.item(i);
             if (n.getNodeType() == Node.ELEMENT_NODE) {
                 String tagName = n.getNodeName();
+
                 if (tagName.equals("factions")) {
-                    List<Faction> factions = parseFactions(n.getChildNodes(), factionFactory, simulatorType);
+                    factions = parseFactions(n.getChildNodes(), factionFactory, simulatorType);
+                    System.out.println("Parse Faction " + factions.size());
                     simulator.setFactions(factions);
                 }
+
+                if (tagName.equals("affiliations")) {
+                    List<Affiliation> affiliations = parseAffiliation(n.getChildNodes(), factions, simulatorType);
+                    Map<Faction, List<Affiliation>> aff = affiliations.stream().collect(Collectors.groupingBy(affiliation -> affiliation.faction));
+
+                    for (Faction faction : factions) {
+                        Map<Faction, Double> tmp = new HashMap<>();
+                        List<Affiliation> affiliationList = aff.get(faction);
+                        if (affiliationList != null) {
+                            affiliationList.forEach(affiliation -> tmp.put(affiliation.targetFaction, affiliation.type));
+                        }
+                        faction.setAffiliations(tmp);
+                        System.out.println(aff);
+                    }
+                }
+
                 if (tagName.equals("board")) {
                     Board board = getIntAttribute(n, "width").flatMap(width ->
                             getIntAttribute(n, "height").map(height -> {
@@ -64,12 +82,12 @@ public class SimulatorParser {
         return simulator;
     }
 
-    public <T> List<T> parseListNodes(NodeList nodeList, Utils.Function<Node, T> f) {
+    public <T> List<T> parseListNodes(NodeList nodeList, String balise, Utils.Function<Node, T> f) {
         ArrayList<T> list = new ArrayList<>();
         int length = nodeList.getLength();
         for (int i=0; i<length; i++) {
             Node n = nodeList.item(i);
-            if (n.getNodeType() == Node.ELEMENT_NODE) {
+            if (n.getNodeType() == Node.ELEMENT_NODE && n.getNodeName().equals(balise)) {
                 list.add(f.apply(n));
             }
         }
@@ -77,7 +95,7 @@ public class SimulatorParser {
     }
 
     public List<Faction> parseFactions(NodeList list, Factory<Faction, String> factory, String simulatorType) {
-        return this.<Faction>parseListNodes(list, (n) -> getAttribute(n, "type").map(type -> {
+        return this.<Faction>parseListNodes(list, "faction", (n) -> getAttribute(n, "type").map(type -> {
             Faction faction = factory.getInstance(type);
             List<Unit> units = parseUnits(n.getChildNodes(), new UnitFactoryOfFactoty().getInstance(simulatorType), faction, simulatorType);
             faction.addUnits(units);
@@ -85,6 +103,16 @@ public class SimulatorParser {
             faction.setLeader(leader);
             return faction;
         }).orElseThrow(() -> new RuntimeException("Invalid Faction " + n.toString())));
+    }
+
+    public List<Affiliation> parseAffiliation(NodeList list, List<Faction> factions, String simulatorType) {
+        return this.<Affiliation>parseListNodes(list, "affiliation", node -> getAttribute(node, "type").flatMap(type ->
+            getAttribute(node, "faction").flatMap(faction ->
+                getAttribute(node, "targetfaction").map(targetFaction ->
+                    Affiliation.create(type, faction, targetFaction, factions)
+                )
+            )
+        ).orElseThrow(() -> new RuntimeException("Invalid Affiliation " + node.getNodeName())));
     }
 
     public Optional<String> getAttribute(Node node, String name) {
@@ -103,7 +131,7 @@ public class SimulatorParser {
     }
 
     public List<Unit> parseUnits(NodeList list, Factory<Unit, String> factory, Faction faction, String simulatorType) {
-        return this.<Unit>parseListNodes(list, (n) -> getAttribute(n, "type").map(type -> {
+        return this.<Unit>parseListNodes(list, "unit", (n) -> getAttribute(n, "type").map(type -> {
             Unit u = factory.getInstance(type);
             u.setType(type);
             u.setName(getAttribute(n, "name"));
@@ -124,7 +152,7 @@ public class SimulatorParser {
     }
 
     public List<Item> parseItems(NodeList list, Factory<Item, String> factory) {
-        return this.<Item>parseListNodes(list, node -> getAttribute(node, "type").map(type -> {
+        return this.<Item>parseListNodes(list, "item", node -> getAttribute(node, "type").map(type -> {
             Item item = factory.getInstance(type);
             item.setType(type);
             if (item instanceof Weapon) {

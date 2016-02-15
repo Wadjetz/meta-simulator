@@ -37,6 +37,9 @@
             </unit>
         </faction>
     </factions>
+    <affiliations>
+        <affiliation type="enemy" faction="zombies" targetfaction="survivors" />
+    </affiliations>
     <board width="20" height="20">
 
     </board>
