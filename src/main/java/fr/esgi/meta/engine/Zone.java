@@ -25,6 +25,15 @@ public class Zone extends Vertex {
     }
 
     public void setUnit(Unit unit) {
-        this.unit = unit;
+        if(unit != null) {
+            this.unit = unit;
+            this.unit.setZone(this);
+        } else
+            this.unit = null;
+    }
+
+    @Override
+    public String toString() {
+        return "Zone{ x=" + getX() + " y=" + getY() + '}';
     }
 }

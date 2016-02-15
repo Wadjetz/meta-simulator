@@ -67,6 +67,10 @@ public abstract class Board extends Graph {
         return sj.toString();
     }
 
+    public Zone[][] getZones() {
+        return zones;
+    }
+
     @Override
     public String toString() {
         return "Board";

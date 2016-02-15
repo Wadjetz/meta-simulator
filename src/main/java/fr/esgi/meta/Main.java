@@ -44,35 +44,9 @@ public class Main {
         }
     }
 
-    public static double getCoefDirector(int xa, int ya, int xb, int yb) {
-        return (double)(xa - xb) / (double)(ya- yb);
-    }
-
     public static void main(String[] args) throws IOException {
-        testGraph();
+        //testGraph();
 
-/*
-        int xa = 0, ya = 1, xb = 5, yb = 1;
-
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        while(!(xa == xb && ya == yb)) {
-            double x = xb - xa;
-            double y = yb - ya;
-
-            xa = (int) Math.round(xa + (coef * 1));
-            ya = (int) Math.round(ya + ((1D - coef) * 1));
-
-            System.out.println("Coef : " + coef);
-            System.out.println("Coef : " + ((1D-coef) * 1));
-            System.out.println("New position : " + xa + ":" + ya);
-            System.out.println("Target position : " + xb + ":" + yb);
-
-            br.readLine();
-        }
-
-        System.out.println(getCoefDirector(0, 0, 1, 4));
-        */
         System.out.println("Meta Simulation");
         try {
             Simulator simulator = new SimulatorParser().parse("zombies.xml");
