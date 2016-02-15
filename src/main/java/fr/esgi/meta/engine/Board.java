@@ -44,17 +44,42 @@ public abstract class Board {
         }
     }
 
-    public void randomDispatch(List<Unit> units) {
+    public  void randomDispatch(List<Unit> units) {
         for (Unit unit : units) {
-            int x = RandomValueGenerator.get(1, width);
-            int y = RandomValueGenerator.get(1, height);
-
-            System.out.println("randomDispatch x=" + x + " y=" + y);
-
-            zones[x][y].addUnit(unit);
+            if(unit.getFaction().getLeader().get().getType().equals("porte-avions"))
+                randomBattleShip(unit);
+            else
+                randomZombie(unit);
         }
     }
 
+    private void randomZombie(Unit unit){
+        int x = RandomValueGenerator.get(1, width);
+        int y = RandomValueGenerator.get(1, height);
+
+        System.out.println("randomDispatch x=" + x + " y=" + y);
+
+        zones[x][y].addUnit(unit);
+    }
+
+    private void randomBattleShip(Unit unit)
+    {
+        int x ;
+        int y ;
+
+       if(unit.getFaction().getLeader().get().getFaction().getName().equals("Allie")){
+            x = RandomValueGenerator.get(1, width/2);
+            y = RandomValueGenerator.get(1, height);
+       }
+        else{
+           x = RandomValueGenerator.get(width/2+1, width);
+           y = RandomValueGenerator.get(1, height);
+       }
+
+        System.out.println("randomDispatch x=" + x + " y=" + y);
+
+        zones[x][y].addUnit(unit);
+    }
     @Override
     public String toString() {
         return "Board " + zones.toString();

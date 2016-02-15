@@ -12,16 +12,10 @@ import java.util.stream.Collectors;
  */
 public class BattleShipSimulator extends Simulator{
 
-    Board board;
-
-    public void setBoard(Board board) {
-        this.board = board;
-    }
-
     @Override
     public void run() {
         System.out.println(name + " simulation run");
-        System.out.println(this);
+        //System.out.println(this);
 
         List<Unit> allUnits = factions.stream().<Unit>flatMap(f -> f.getUnits().stream()).collect(Collectors.toList());
         board.randomDispatch(allUnits);
