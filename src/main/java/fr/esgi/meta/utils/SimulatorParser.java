@@ -1,14 +1,11 @@
 package fr.esgi.meta.utils;
 
+import fr.esgi.meta.engine.factories.*;
 import fr.esgi.meta.engine.simulations.Simulator;
 import fr.esgi.meta.engine.units.Item;
 import fr.esgi.meta.engine.units.Unit;
 import fr.esgi.meta.pattern.factory.Factory;
 import fr.esgi.meta.engine.*;
-import fr.esgi.meta.engine.factories.FactionFactoryOfFactory;
-import fr.esgi.meta.engine.factories.ItemFactoryOfFactory;
-import fr.esgi.meta.engine.factories.SimulatorFactory;
-import fr.esgi.meta.engine.factories.UnitFactoryOfFactoty;
 import fr.esgi.meta.zombiland.ZombieBoard;
 import fr.esgi.meta.zombiland.item.Weapon;
 import org.w3c.dom.Document;
@@ -48,14 +45,14 @@ public class SimulatorParser {
                     simulator.setFactions(factions);
                 }
                 if (tagName.equals("board")) {
-                    Board board = getIntAttribute(n, "width").flatMap(width ->
+                    simulator.setBoard( getIntAttribute(n, "width").flatMap(width ->
                             getIntAttribute(n, "height").map(height ->
-                                new ZombieBoard(width, height)
+                                new BoardFactory(simulatorType,width, height)
                             )
                     ).orElseThrow(() ->
                             new RuntimeException("Board not found " + n.toString())
+                    )
                     );
-                    simulator.setBoard(board);
                 }
             }
         }

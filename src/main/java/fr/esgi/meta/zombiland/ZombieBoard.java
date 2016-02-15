@@ -6,4 +6,5 @@ public class ZombieBoard extends Board {
     public ZombieBoard(int width, int height) {
         super(width, height);
     }
+
 }

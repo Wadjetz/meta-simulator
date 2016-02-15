@@ -12,7 +12,22 @@ import java.util.List;
  */
 public abstract class Board {
 
+    public  Board(){}
+
+    public Zone[][] getZones() {
+        return zones;
+    }
+
     Zone[][] zones;
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
     int width = 0;
     int height = 0;
 
