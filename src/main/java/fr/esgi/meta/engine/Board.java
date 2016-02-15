@@ -7,6 +7,7 @@ import fr.esgi.meta.engine.units.Unit;
 
 import java.util.List;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 
 /**
@@ -73,7 +74,20 @@ public abstract class Board extends Graph {
 
     @Override
     public String toString() {
-        return "Board";
+        StringJoiner sj = new StringJoiner("");
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                Zone z = zones[x][y];
+                sj.add("| ");
+                if (z.unit.isPresent()) {
+                    sj.add(z.unit.get().getType().charAt(0) + " ");
+                } else {
+                    sj.add("  ");
+                }
+            }
+            sj.add("\n");
+        }
+        return sj.toString();
     }
 
     public int getWidth() {

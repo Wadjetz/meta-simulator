@@ -7,6 +7,7 @@ import fr.esgi.meta.utils.graph.Edge;
 import fr.esgi.meta.utils.graph.Vertex;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BehaviourDisplacement {
 
@@ -16,7 +17,7 @@ public interface BehaviourDisplacement {
         // Get the nearest enemy
         List<Vertex> nearestEnemyPath = board.findNearest(currentZone, vertex -> {
             for(Edge e : vertex.getAdjacencies()) {
-                if(((Zone) vertex).hasUnit() && me.isEnemyWith(((Zone) vertex).getUnit()))
+                if(((Zone) vertex).isEmpty() && me.isEnemyWith(((Zone) vertex).getUnit().get()))
                     return true; // Case near an enemy
             }
             return false;
@@ -35,7 +36,7 @@ public interface BehaviourDisplacement {
         if(!toGo.equals(currentZone)) {
             System.out.println(me.getName() + " has moved from " + currentZone + " to " + toGo);
             currentZone.setUnit(null);
-            toGo.setUnit(me);
+            toGo.setUnit(Optional.of(me));
             me.setZone(toGo);
         } else
             System.out.println(me.getName() + " has not moved");
