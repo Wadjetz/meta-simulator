@@ -55,8 +55,14 @@ public class Main {
         System.out.println(optional2.map(i -> i > 10).orElseGet(() ->  false));
 
         System.out.println("Meta Simulation");
-        try {
+        /*try {
             Simulator simulator = new SimulatorParser().parse("zombies.xml");
+            simulator.run();
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            e.printStackTrace();
+        }*/
+        try {
+            Simulator simulator = new SimulatorParser().parse("battleship.xml");
             simulator.run();
         } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
