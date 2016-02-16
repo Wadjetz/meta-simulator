@@ -6,10 +6,4 @@ import java.util.List;
 
 public class BattleShipBoard extends Board {
 
-    @Override
-    public void randomDispatch(List<Unit> units) {
-        System.out.println("BattleShipBoard.randomDispatch");
-        // TODO
-    }
-
 }

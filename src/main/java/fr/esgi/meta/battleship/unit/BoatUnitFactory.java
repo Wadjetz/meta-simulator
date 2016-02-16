@@ -4,9 +4,6 @@ import fr.esgi.meta.engine.units.Unit;
 import fr.esgi.meta.pattern.factory.Factory;
 import fr.esgi.meta.zombiland.unit.*;
 
-/**
- * Created by 626 on 15/02/2016.
- */
 public class BoatUnitFactory extends Factory<Unit, String> {
     @Override
     public Unit getInstance(String type) {
