@@ -14,15 +14,13 @@ public class Affiliation {
     }
 
     public static Affiliation create(String type, String factionType, String targetFactionType, List<Faction> factions) {
-        System.out.println("factions" + factions.size());
-        System.out.println(type + " " + factionType + " " + targetFactionType);
         Faction faction = factions.stream().filter(f -> f.getName().equals(factionType)).findFirst().orElseThrow(() ->
             new RuntimeException("Affiliation faction not found: " + factionType)
         );
         Faction targetFaction = factions.stream().filter(f -> f.getName().equals(targetFactionType)).findFirst().orElseThrow(() ->
-                new RuntimeException("Affiliation targetFactionType not found: " + targetFactionType)
+            new RuntimeException("Affiliation targetFactionType not found: " + targetFactionType)
         );
-        double t = 0;
+        double t;
         switch (type) {
             case "enemy":
                 t = -1;

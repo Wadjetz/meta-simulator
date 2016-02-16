@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by 626 on 15/02/2016.
- */
 public class BattleShipSimulator extends Simulator implements Observable{
 
     List<Observer> observerList = observerList = new ArrayList<Observer>();
@@ -18,7 +15,6 @@ public class BattleShipSimulator extends Simulator implements Observable{
     @Override
     public void run() {
         System.out.println(name + " simulation run");
-        //System.out.println(this);
 
         List<Unit> allUnits = factions.stream().<Unit>flatMap(f -> f.getUnits().stream()).collect(Collectors.toList());
         board.randomDispatch(allUnits);
@@ -42,8 +38,6 @@ public class BattleShipSimulator extends Simulator implements Observable{
 
     @Override
     public void emit() {
-        for (Observer observer : observerList) {
-            observer.update();
-        }
+        observerList.forEach(Observer::update);
     }
 }

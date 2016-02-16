@@ -1,7 +1,7 @@
 package fr.esgi.meta.engine.factories;
 
 import fr.esgi.meta.battleship.unit.BattleShipFactory;
-import fr.esgi.meta.engine.simulations.BattleShipSimulator;
+import fr.esgi.meta.microorganism.MicroorganismFactory;
 import fr.esgi.meta.pattern.factory.Factory;
 import fr.esgi.meta.pattern.factory.FactoryOfFactory;
 import fr.esgi.meta.engine.Faction;
@@ -15,6 +15,8 @@ public class FactionFactoryOfFactory extends FactoryOfFactory<Factory<Faction, S
                 return new ZombiesLandFactory();
             case "BattleShip":
                 return new BattleShipFactory();
+            case "microorganism":
+                return new MicroorganismFactory();
             default:
                 throw new RuntimeException("Unknown FactionFactoryOfFactory");
         }

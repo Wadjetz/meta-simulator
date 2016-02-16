@@ -43,7 +43,7 @@ public class SimulatorParser {
 
                 if (tagName.equals("factions")) {
                     factions = parseFactions(n.getChildNodes(), factionFactory, simulatorType);
-                    System.out.println("Parse Faction " + factions.size());
+                    System.out.println("Parse Factions " + factions.size());
                     simulator.setFactions(factions);
                 }
 
@@ -58,7 +58,6 @@ public class SimulatorParser {
                             affiliationList.forEach(affiliation -> tmp.put(affiliation.targetFaction, affiliation.type));
                         }
                         faction.setAffiliations(tmp);
-                        System.out.println(aff);
                     }
                 }
 

@@ -1,13 +1,14 @@
 package fr.esgi.meta.engine;
 
+import fr.esgi.meta.utils.RandomValueGenerator;
 import fr.esgi.meta.utils.graph.Edge;
 import fr.esgi.meta.utils.graph.Graph;
 
 import fr.esgi.meta.engine.units.Unit;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.StringJoiner;
-import java.util.stream.Collectors;
 
 
 /**
@@ -64,7 +65,14 @@ public abstract class Board extends Graph {
         }
     }
 
-    public abstract void randomDispatch(List<Unit> units);
+    public void randomDispatch(List<Unit> units) {
+        System.out.println("Board Random Dispatch");
+        for (Unit unit : units) {
+            int x = RandomValueGenerator.get(1, getWidth());
+            int y = RandomValueGenerator.get(1, getHeight());
+            getZones()[x][y].setUnit(Optional.of(unit));
+        }
+    }
 
     private String spaces(int n) {
         StringJoiner sj = new StringJoiner("");

@@ -16,11 +16,10 @@ public abstract class Faction {
         this.leader = leader;
     }
 
-    private List<Unit> units;
-    private Map<Faction, Double> affiliations;
+    private List<Unit> units = new ArrayList<>();;
+    private Map<Faction, Double> affiliations = new HashMap<>();
 
     public Faction() {
-        units = new ArrayList<>();
     }
 
     public void removeUnit(Unit u) {
