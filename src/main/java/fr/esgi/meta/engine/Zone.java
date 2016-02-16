@@ -13,6 +13,7 @@ import java.util.Optional;
 public class Zone extends Vertex {
 
     Optional<Unit> unit = Optional.empty();
+    int tileType;
 
     public Zone(int x, int y) {
         super("" + x + ":" + y, x, y);
@@ -33,6 +34,14 @@ public class Zone extends Vertex {
             this.unit.get().setZone(this);
         } else
             this.unit = Optional.empty();
+    }
+
+    public int getTileType() {
+        return tileType;
+    }
+
+    public void setTileType(int tileType) {
+        this.tileType = tileType;
     }
 
     @Override
