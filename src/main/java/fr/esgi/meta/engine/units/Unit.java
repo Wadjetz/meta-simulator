@@ -28,30 +28,26 @@ public abstract class Unit implements Fighter, Defenser {
     private int life = 60;
     private Faction faction;
     private Zone zone;
-    private State state;
+    private UnitState state;
     protected BehaviourFight behaviourFight;
     protected BehaviourDefense behaviourDefense;
     protected BehaviourDisplacement behaviourDisplacement;
 
-    protected Unit(String type, BehaviourFight behaviourFight, BehaviourDefense behaviourDefense,
-                   BehaviourDisplacement behaviourDisplacement) {
+    public Unit(String type, BehaviourFight behaviourFight, BehaviourDefense behaviourDefense,
+                   BehaviourDisplacement behaviourDisplacement, UnitState state) {
         this.type = type;
         this.behaviourFight = behaviourFight;
         this.behaviourDefense = behaviourDefense;
         this.behaviourDisplacement = behaviourDisplacement;
+        this.state = state;
     }
 
     public boolean isAlive() {
-        // TODO add DP State
-        if (life > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.state.isAlive(this);
     }
 
     public boolean isDead() {
-        return life == 0;
+        return ! isAlive();
     }
 
     public int damages() {
@@ -132,11 +128,11 @@ public abstract class Unit implements Fighter, Defenser {
         this.behaviourDisplacement.displace(this, board, getZone());
     }
 
-    public State getState() {
+    public UnitState getState() {
         return state;
     }
 
-    public void setState(State state) {
+    public void setState(UnitState state) {
         this.state = state;
     }
 
