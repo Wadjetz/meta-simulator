@@ -13,6 +13,6 @@ public class Zombie extends Unit {
 
     @Override
     public String toString() {
-        return "Zombie(" + getType() + ", " + getName() + ", " + getFaction().getName() + ", " + getItems().toString() + ", " + getQuantity() + ", " + isLeader() + ")";
+        return "Zombie(" + getType() + ", " + getName() + ", " + getFaction().getName() + ", " + getItems().toString() + ", " + isLeader() + ")";
     }
 }
