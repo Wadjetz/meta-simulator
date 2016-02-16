@@ -37,8 +37,6 @@ public abstract class Unit implements Fighter, Defenser {
 
     private Boolean isLeader = false;
 
-    private int quantity = 1;
-
     protected Unit(String type, BehaviourFight behaviourFight, BehaviourDefense behaviourDefense,
                    BehaviourDisplacement behaviourDisplacement) {
         this.type = type;
@@ -71,7 +69,7 @@ public abstract class Unit implements Fighter, Defenser {
 
     @Override
     public String toString() {
-        return "Unit(" + type + ", " + getName() + ", " + faction.getName() + ", " + items.toString() + ", " + getQuantity() + ", " + isLeader() + ")";
+        return "Unit(" + type + ", " + getName() + ", " + faction.getName() + ", " + items.toString() + ", " + isLeader() + ")";
     }
 
     public void setItems(List<Item> items) {
@@ -100,14 +98,6 @@ public abstract class Unit implements Fighter, Defenser {
 
     public void setName(Optional<String> name) {
         this.name = name;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     public boolean isEnemyWith(Unit otherUnit) {
