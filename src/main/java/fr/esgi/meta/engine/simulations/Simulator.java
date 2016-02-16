@@ -4,6 +4,8 @@ import fr.esgi.meta.engine.Board;
 import fr.esgi.meta.engine.Faction;
 import fr.esgi.meta.engine.Zone;
 import fr.esgi.meta.engine.units.Unit;
+import fr.esgi.meta.view.TileSet;
+import fr.esgi.meta.view.TileType;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,6 +20,9 @@ public abstract class Simulator {
     protected String name;
     protected Board board;
     protected List<Faction> factions;
+
+    private TileSet tileSet;
+    private List<TileType> tileTypeList;
 
     public Simulator() {
         factions = new ArrayList<>();
@@ -91,5 +96,21 @@ public abstract class Simulator {
 
 
         //getFactions().get(0).getUnits().get(0).figth(getFactions().get(1).getUnits().get(0));
+    }
+
+    public TileSet getTileSet() {
+        return tileSet;
+    }
+
+    public void setTileSet(TileSet tileSet) {
+        this.tileSet = tileSet;
+    }
+
+    public List<TileType> getTileTypeList() {
+        return tileTypeList;
+    }
+
+    public void setTileTypeList(List<TileType> tileTypeList) {
+        this.tileTypeList = tileTypeList;
     }
 }
