@@ -2,37 +2,37 @@
 <simulation type="zombies-land">
     <factions>
         <faction type="zombies">
-            <unit type="zombie" role="leader" name="Zombie Lord"/>
-            <unit type="zombie" role="member" name="Zombie" quantity="13" />
+            <unit type="zombie" role="leader" name="Zombie Lord" life="100" />
+            <unit type="zombie" role="member" name="Zombie" life="60" quantity="10" />
         </faction>
         <faction type="survivors">
-            <unit type="human" role="leader" name="Rick">
+            <unit type="human" role="leader" name="Rick" life="100">
                 <item type="shotgun" ammunition="5"/>
                 <item type="leather armor"/>
             </unit>
-            <unit type="human" role="member" quantity="2">
+            <unit type="human" role="member" life="60" quantity="6">
                 <item type="pistol" />
             </unit>
-            <unit type="human" role="member" quantity="2">
+            <unit type="human" role="member" life="60" quantity="2">
                 <item type="rifle" ammunition="15" />
             </unit>
         </faction>
         <faction type="cannibals">
-            <unit type="human" role="leader" name="Hannibal">
+            <unit type="human" role="leader" life="150" name="Hannibal">
                 <item type="axe" ammunition="5"/>
             </unit>
-            <unit type="human" role="member" quantity="4">
+            <unit type="human" role="member" life="50" quantity="2">
                 <item type="machete" />
             </unit>
-            <unit type="human" role="member" quantity="2">
+            <unit type="human" role="member" life="60" quantity="2">
                 <item type="knife" />
             </unit>
         </faction>
         <faction type="bandits">
-            <unit type="human" role="leader" name="Jack">
+            <unit type="human" role="leader" name="Jack" life="100">
                 <item type="machine gun" ammunition="5"/>
             </unit>
-            <unit type="human" role="member" quantity="4">
+            <unit type="human" role="member" life="60" quantity="4">
                 <item type="pistol" />
             </unit>
         </faction>

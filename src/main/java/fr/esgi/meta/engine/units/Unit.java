@@ -8,9 +8,11 @@ import fr.esgi.meta.pattern.state.State;
 import fr.esgi.meta.pattern.strategy.BehaviourDefense;
 import fr.esgi.meta.pattern.strategy.BehaviourDisplacement;
 import fr.esgi.meta.pattern.strategy.BehaviourFight;
+import fr.esgi.meta.utils.RandomValueGenerator;
 import fr.esgi.meta.utils.graph.Edge;
 import fr.esgi.meta.utils.graph.Vertex;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,22 +22,16 @@ import java.util.stream.Collectors;
  * Default unit in the simulation.
  */
 public abstract class Unit implements Fighter, Defenser {
-
+    private String type;
+    private Optional<String> name;
+    private Boolean isLeader = false;
+    private int life = 60;
+    private Faction faction;
+    private Zone zone;
+    private State state;
     protected BehaviourFight behaviourFight;
     protected BehaviourDefense behaviourDefense;
     protected BehaviourDisplacement behaviourDisplacement;
-
-    private State state;
-
-    private String type;
-
-    private Faction faction;
-
-    private Zone zone;
-
-    private Optional<String> name;
-
-    private Boolean isLeader = false;
 
     protected Unit(String type, BehaviourFight behaviourFight, BehaviourDefense behaviourDefense,
                    BehaviourDisplacement behaviourDisplacement) {
@@ -43,6 +39,23 @@ public abstract class Unit implements Fighter, Defenser {
         this.behaviourFight = behaviourFight;
         this.behaviourDefense = behaviourDefense;
         this.behaviourDisplacement = behaviourDisplacement;
+    }
+
+    public boolean isAlive() {
+        // TODO add DP State
+        if (life > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isDead() {
+        return life == 0;
+    }
+
+    public int damages() {
+        return RandomValueGenerator.get(1, 15);
     }
 
     public Zone getZone() {
@@ -69,7 +82,7 @@ public abstract class Unit implements Fighter, Defenser {
 
     @Override
     public String toString() {
-        return "Unit(" + type + ", " + getName() + ", " + faction.getName() + ", " + items.toString() + ", " + isLeader() + ")";
+        return "Unit(" + getName().orElse(type) + ", " + faction.getName() + ", items=" + items.size() + ", life=" + life + ")";
     }
 
     public void setItems(List<Item> items) {
@@ -134,5 +147,22 @@ public abstract class Unit implements Fighter, Defenser {
                 .filter(z -> z.getUnit().isPresent())
                 .map(z -> z.getUnit().get())
                 .collect(Collectors.toList());
+    }
+
+    public int getLife() {
+        return life;
+    }
+
+    public void setLife(int life) {
+        this.life = life;
+    }
+
+    public void haveDamages(int damages) {
+        if (life > damages) {
+            life -= damages;
+        } else {
+            life = 0;
+            System.out.println("DEAD DEAD DEAD DEAD -> " + this);
+        }
     }
 }

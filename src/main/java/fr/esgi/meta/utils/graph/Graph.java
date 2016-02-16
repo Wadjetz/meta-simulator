@@ -1,5 +1,7 @@
 package fr.esgi.meta.utils.graph;
 
+import fr.esgi.meta.engine.simulations.Simulator;
+
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -56,8 +58,8 @@ public class Graph {
         List<Vertex> shortestPathVertices = new ArrayList<>();
         Path shortestPath = vertexPriorityQueue.pollFirst();
 
-        System.out.println("Target targeted : ");
-        System.out.println(shortestPath.vertex.toString());
+        if (Simulator.DEBUG) System.out.println("Target targeted : ");
+        if (Simulator.DEBUG) System.out.println(shortestPath.vertex.toString());
 
         while(shortestPath != null) {
             shortestPathVertices.add(0, shortestPath.vertex);

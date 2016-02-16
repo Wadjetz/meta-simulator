@@ -10,9 +10,4 @@ public class Zombie extends Unit {
                      BehaviourDisplacement behaviourDisplacement) {
         super(type, behaviourFight, behaviourDefense, behaviourDisplacement);
     }
-
-    @Override
-    public String toString() {
-        return "Zombie(" + getType() + ", " + getName() + ", " + getFaction().getName() + ", " + getItems().toString() + ", " + isLeader() + ")";
-    }
 }

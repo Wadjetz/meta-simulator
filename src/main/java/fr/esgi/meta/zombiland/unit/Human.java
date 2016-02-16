@@ -10,18 +10,4 @@ public class Human extends Humanoid {
                     BehaviourDisplacement behaviourDisplacement) {
         super(type, behaviourFight, behaviourDefense, behaviourDisplacement);
     }
-
-    @Override
-    public double getLife() {
-        return 0;
-    }
-
-    @Override
-    public void setLife(double life) {
-    }
-
-    @Override
-    public void defense(Unit enemy) {
-        super.defense(enemy);
-    }
 }

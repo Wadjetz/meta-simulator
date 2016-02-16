@@ -2,6 +2,7 @@ package fr.esgi.meta.pattern.strategy;
 
 import fr.esgi.meta.engine.Board;
 import fr.esgi.meta.engine.Zone;
+import fr.esgi.meta.engine.simulations.Simulator;
 import fr.esgi.meta.engine.units.Unit;
 import fr.esgi.meta.utils.graph.Edge;
 import fr.esgi.meta.utils.graph.Vertex;
@@ -14,7 +15,7 @@ public interface BehaviourDisplacement {
     int getDistancePerTurn();
 
     default void displace(Unit me, Board board, Zone currentZone) {
-        System.out.println(me.toString());
+        if (Simulator.DEBUG) System.out.println(me.toString());
 
         // Get the nearest enemy
         List<Vertex> nearestEnemyPath = board.findNearest(currentZone, vertex -> {
@@ -31,18 +32,19 @@ public interface BehaviourDisplacement {
             return;
 
         Zone toGo = currentZone;
-        int i = getDistancePerTurn(); // Number of iteration
+        int i = getDistancePerTurn() + 1; // Number of iteration
         while(i > 0 && nearestEnemyPath.size() > 0) {
             toGo = (Zone) nearestEnemyPath.remove(0);
             i--;
         }
 
         if(!toGo.equals(currentZone)) {
-            System.out.println(me.toString() + " has moved from " + currentZone + " to " + toGo);
+            if (Simulator.DEBUG) System.out.println(me.toString() + " has moved from " + currentZone + " to " + toGo);
             currentZone.setUnit(Optional.empty());
             toGo.setUnit(Optional.of(me));
             me.setZone(toGo);
-        } else
-            System.out.println(me.toString() + " has not moved at " + currentZone);
+        } else {
+            if (Simulator.DEBUG) System.out.println(me.toString() + " has not moved at " + currentZone);
+        }
     }
 }

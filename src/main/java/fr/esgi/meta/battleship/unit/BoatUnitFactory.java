@@ -1,5 +1,6 @@
 package fr.esgi.meta.battleship.unit;
 
+import fr.esgi.meta.engine.DefenseDefault;
 import fr.esgi.meta.engine.units.Unit;
 import fr.esgi.meta.pattern.factory.Factory;
 import fr.esgi.meta.zombiland.unit.*;
