@@ -3,10 +3,14 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.canvas.Canvas?>
 
+<?import javafx.scene.control.Button?>
 <GridPane fx:controller="fr.esgi.meta.MainController"
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
-    <HBox>
+    <HBox GridPane.columnIndex="0" GridPane.rowIndex="0">
         <Canvas fx:id="canvas" width="500" height="500"/>
         <TextArea fx:id="eventTextArea" editable="false" maxWidth="250">Log des events (TODO)</TextArea>
+    </HBox>
+    <HBox GridPane.columnIndex="0" GridPane.rowIndex="1">
+        <Button text="Tour suivant" onAction="#nextTurn" />
     </HBox>
 </GridPane>

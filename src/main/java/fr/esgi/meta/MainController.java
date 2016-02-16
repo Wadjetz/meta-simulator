@@ -3,74 +3,116 @@ package fr.esgi.meta;
 import fr.esgi.meta.engine.Board;
 import fr.esgi.meta.engine.Zone;
 import fr.esgi.meta.engine.simulations.Simulator;
+import fr.esgi.meta.engine.units.Unit;
+import fr.esgi.meta.utils.RandomValueGenerator;
+import fr.esgi.meta.view.TileType;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
+/**
+ * Controller of the main panel
+ */
 public class MainController {
     @FXML
     private TextArea eventTextArea;
     @FXML
     private Canvas canvas;
 
-    int[][] tiles = new int[][]{
-        { 16,16,16,16,16,16,16,16,16,16,16 },
-        { 16,56,56,56,56,56,56,56,56,56,16 },
-        { 16,56,56,56,56,56,56,56,56,56,16 },
-        { 16,56,56,56,56,56,56,56,56,56,16 },
-        { 16,56,56,56,16,16,56,56,56,16,16 },
-        { 16,56,56,56,56,56,56,56,16,56,16 },
-        { 16,56,56,56,16,16,16,16,16,56,16 },
-        { 16,56,56,56,16,56,56,56,56,56,16 },
-        { 16,56,56,56,16,56,56,56,56,56,16 },
-        { 16,56,56,56,56,56,56,56,16,56,16 },
-        { 16,56,56,56,56,56,56,56,56,56,16 },
-        { 16,16,16,16,16,16,16,16,16,16,16 }
-    };
+    private Simulator simulator;
+    private Thread simulatorThread;
 
-    final String IMAGE_PATH = "http://server.vuzi.fr/tests/algo/floor.png";
-    final int TILE_WIDTH = 8;
-    final int TILE_HEIGHT = 8;
-    private double tileWidth;
-    private double tileHeight;
-    private Image tilesImg;
+    private Image canvasCache;
 
     @FXML
-    private void initialize() {
-        // Load the tile image
-        tilesImg = new Image(IMAGE_PATH);
-        tilesImg.errorProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("ERROR");
-            System.out.println(newValue);
-        });
+    private void initialize() {}
 
-        // Guess the tile width and height
-        tileWidth = tilesImg.getWidth() / TILE_WIDTH;
-        tileHeight = tilesImg.getHeight() / TILE_HEIGHT;
+    @FXML
+    private void nextTurn() {
+        simulatorThread.interrupt();
     }
 
-    public void update(Simulator simulator) {
+    /**
+     * Update the view of the controller. Note that if the view have already been drawn, a cached version is used for
+     * the background
+     */
+    private void update() {
         Board board = simulator.getBoard();
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        // Update canvas size
-        canvas.setWidth(board.getWidth() * tileWidth);
-        canvas.setHeight(board.getHeight() * tileHeight);
+        // Draw the canvas
+        if(canvasCache == null) {
+            // No cached canvas, draw everything
+            canvas.setWidth(board.getWidth() * board.getTileSet().getTileWidth());
+            canvas.setHeight(board.getHeight() * board.getTileSet().getTileHeight());
 
-        for(int x = 0; x < board.getWidth(); x++) {
-            for(int y = 0; y < board.getHeight(); y++) {
-                int tileValue = board.getZones()[x][y].getTileType();
-                int tileValueY = tileValue / TILE_WIDTH;
-                int tileValueX = tileValue % TILE_WIDTH;
+            for (int x = 0; x < board.getWidth(); x++) {
+                for (int y = 0; y < board.getHeight(); y++) {
+                    int tileTypeValue = board.getZones()[x][y].getTileType();
 
-                gc.drawImage(tilesImg, (double)tileValueX * tileHeight, (double)tileValueY * tileWidth, tileWidth, tileHeight, (double)x * tileWidth, (double)y * tileHeight, tileWidth, tileHeight);
+                    for (TileType tileType : board.getTileTypeList()) {
+                        if (tileType.getType() == tileTypeValue) {
+                            int randomTilePos = RandomValueGenerator.get(0, tileType.getTileSetValues().length);
+                            int tilePos = tileType.getTileSetValues()[randomTilePos];
+
+                            int tilePosY = tilePos / board.getTileSet().getTileNbHeight();
+                            int tilePosX = tilePos % board.getTileSet().getTileNbWidth();
+
+                            gc.drawImage(board.getTileSet().getTileSetImage(),
+                                    (double) tilePosX * board.getTileSet().getTileWidth(), (double) tilePosY * board.getTileSet().getTileHeight(),
+                                    board.getTileSet().getTileWidth(), board.getTileSet().getTileHeight(),
+                                    (double) x * board.getTileSet().getTileWidth(), (double) y * board.getTileSet().getTileHeight(),
+                                    board.getTileSet().getTileWidth(), board.getTileSet().getTileHeight());
+
+                            break;
+                        }
+                    }
+                }
             }
+
+            SnapshotParameters params = new SnapshotParameters();
+            params.setFill(Color.TRANSPARENT);
+            canvasCache = canvas.snapshot(params, null);
+        } else {
+            // Canvas cached, only draw the cache
+            gc.drawImage(canvasCache, 0, 0);
         }
 
-        //drawShapes(gc);
+        for (int x = 0; x < board.getWidth(); x++) {
+            for (int y = 0; y < board.getHeight(); y++) {
+                if (board.getZones()[x][y].getUnit().isPresent()) {
+                    Unit unit = board.getZones()[x][y].getUnit().get();
+                    gc.setFont(Font.font("Verdana", 60));
+                    gc.fillText((unit.getType().charAt(0) + "").toUpperCase(), x * board.getTileSet().getTileWidth(), y * board.getTileSet().getTileHeight());
+                }
+            }
+        }
+    }
 
+    /**
+     * Set the simulator to the controller. The controller will start and handle the simulation
+     *
+     * @param simulator The simulation to use
+     */
+    public void setSimulator(Simulator simulator) {
+        this.simulator = simulator;
+
+        // Register as an observer
+        simulator.addObserver(() -> Platform.runLater(this::update));
+
+        // Launch the simulator
+        simulatorThread = new Thread(() -> {
+            this.simulator.run();
+        });
+        simulatorThread.start();
     }
 }
