@@ -12,7 +12,9 @@ import java.util.Optional;
  */
 public class Zone extends Vertex {
 
-    Optional<Unit> unit = Optional.empty();
+    private Optional<Unit> unit = Optional.empty();
+    private int tileType;
+    private boolean forcedEmpty = false;
 
     public Zone(int x, int y) {
         super("" + x + ":" + y, x, y);
@@ -24,7 +26,7 @@ public class Zone extends Vertex {
 
     @Override
     public boolean isEmpty() {
-        return !unit.isPresent();
+        return forcedEmpty || !unit.isPresent();
     }
 
     public void setUnit(Optional<Unit> unit) {
@@ -33,6 +35,22 @@ public class Zone extends Vertex {
             this.unit.get().setZone(this);
         } else
             this.unit = Optional.empty();
+    }
+
+    public int getTileType() {
+        return tileType;
+    }
+
+    public void setTileType(int tileType) {
+        this.tileType = tileType;
+    }
+
+    public boolean isForcedEmpty() {
+        return forcedEmpty;
+    }
+
+    public void setForcedEmpty(boolean forcedEmpty) {
+        this.forcedEmpty = forcedEmpty;
     }
 
     @Override

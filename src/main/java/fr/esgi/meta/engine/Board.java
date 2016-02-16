@@ -5,6 +5,8 @@ import fr.esgi.meta.utils.graph.Edge;
 import fr.esgi.meta.utils.graph.Graph;
 
 import fr.esgi.meta.engine.units.Unit;
+import fr.esgi.meta.view.TileSet;
+import fr.esgi.meta.view.TileType;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +20,9 @@ public abstract class Board extends Graph {
     int width = 0;
     int height = 0;
     Zone[][] zones;
+
+    private TileSet tileSet;
+    private List<TileType> tileTypeList;
 
     public Board() {
         super(null);
@@ -35,17 +40,25 @@ public abstract class Board extends Graph {
         }
         this.width = width;
         this.height = height;
-        init();
     }
 
-    public void init() {
+    public void init(TileSet tileSet, List<TileType> tileTypes) {
         System.out.println("Board init width=" + width + " height=" + height);
-        zones = new Zone[width][height];
+
+        this.tileSet = tileSet;
+        this.tileTypeList = tileTypes;
+        this.zones = new Zone[width][height];
 
         // Create every zone
         for(int i = 0; i < width; i++) {
             for(int j = 0; j < height; j++) {
                 zones[i][j] = new Zone(i, j);
+
+                if(tileTypes.size() > 0) {
+                    TileType tileType = tileTypes.get(RandomValueGenerator.get(0, tileTypes.size()));
+                    zones[i][j].setTileType(tileType.getType());
+                    zones[i][j].setForcedEmpty(tileType.isWall());
+                }
             }
         }
 
@@ -97,8 +110,8 @@ public abstract class Board extends Graph {
                 } else {
                     Zone z = zones[x][y];
                     sj.add("| ");
-                    if (z.unit.isPresent()) {
-                        sj.add(z.unit.get().getType().charAt(0) + " ");
+                    if (z.getUnit().isPresent()) {
+                        sj.add(z.getUnit().get().getType().charAt(0) + " ");
                     } else {
                         sj.add("  ");
                     }
@@ -125,4 +138,19 @@ public abstract class Board extends Graph {
         this.height = height;
     }
 
+    public void setTileSet(TileSet tileSet) {
+        this.tileSet = tileSet;
+    }
+
+    public TileSet getTileSet() {
+        return tileSet;
+    }
+
+    public void setTileTypeList(List<TileType> tileTypeList) {
+        this.tileTypeList = tileTypeList;
+    }
+
+    public List<TileType> getTileTypeList() {
+        return tileTypeList;
+    }
 }

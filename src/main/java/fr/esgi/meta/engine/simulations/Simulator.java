@@ -2,12 +2,11 @@ package fr.esgi.meta.engine.simulations;
 
 import fr.esgi.meta.engine.Board;
 import fr.esgi.meta.engine.Faction;
-import fr.esgi.meta.engine.Zone;
 import fr.esgi.meta.engine.units.Unit;
+import fr.esgi.meta.pattern.observer.Observer;
+import fr.esgi.meta.view.TileSet;
+import fr.esgi.meta.view.TileType;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
@@ -15,11 +14,16 @@ import java.util.stream.Collectors;
 
 public abstract class Simulator {
 
+    List<Observer> observerList = new ArrayList<Observer>();
+
     public static final boolean DEBUG = false;
 
     protected String name;
     protected Board board;
     protected List<Faction> factions;
+
+    private TileSet tileSet;
+    private List<TileType> tileTypeList;
 
     public Simulator() {
         factions = new ArrayList<>();
@@ -53,17 +57,11 @@ public abstract class Simulator {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        StringJoiner sj = new StringJoiner(" ", "[", "]");
-        sj.add("Simulator").add(name);
-        factions.stream().forEach(f -> sj.add(f.toString()));
-        return sj.toString();
+    public void addObserver(Observer observer) {
+        observerList.add(observer);
     }
 
-    public void run() throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
+    public void run() {
         int turn = 1;
         System.out.println(name + " simulation run");
         System.out.println(this);
@@ -94,21 +92,39 @@ public abstract class Simulator {
                 }
             }
 
-            // Enter to continue..
-            //br.readLine();
+            // Update every observer
+            observerList.forEach(Observer::update);
 
+            // Sleep waiting for the next step
             try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-
+                Thread.sleep(Long.MAX_VALUE);
+            } catch (InterruptedException ignored) {}
 
             turn++;
         }
+    }
 
+    public TileSet getTileSet() {
+        return tileSet;
+    }
 
-        //getFactions().get(0).getUnits().get(0).figth(getFactions().get(1).getUnits().get(0));
+    public void setTileSet(TileSet tileSet) {
+        this.tileSet = tileSet;
+    }
+
+    public List<TileType> getTileTypeList() {
+        return tileTypeList;
+    }
+
+    public void setTileTypeList(List<TileType> tileTypeList) {
+        this.tileTypeList = tileTypeList;
+    }
+
+    @Override
+    public String toString() {
+        StringJoiner sj = new StringJoiner(" ", "[", "]");
+        sj.add("Simulator").add(name);
+        factions.stream().forEach(f -> sj.add(f.toString()));
+        return sj.toString();
     }
 }

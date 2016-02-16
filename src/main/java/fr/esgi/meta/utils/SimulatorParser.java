@@ -6,7 +6,10 @@ import fr.esgi.meta.engine.units.Item;
 import fr.esgi.meta.engine.units.Unit;
 import fr.esgi.meta.pattern.factory.Factory;
 import fr.esgi.meta.engine.*;
+import fr.esgi.meta.view.TileSet;
+import fr.esgi.meta.view.TileType;
 import fr.esgi.meta.zombiland.item.Weapon;
+import javafx.scene.image.Image;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -62,12 +65,15 @@ public class SimulatorParser {
                 }
 
                 if (tagName.equals("board")) {
+                    TileSet tileSet = parseTileSet(n.getChildNodes());
+                    List<TileType> tileTypes = parseTileTypes(n.getChildNodes());
+
                     Board board = getIntAttribute(n, "width").flatMap(width ->
                             getIntAttribute(n, "height").map(height -> {
                                 Board b = new BoardFactory().getInstance(simulatorType);
                                 b.setWidth(width);
                                 b.setHeight(height);
-                                b.init();
+                                b.init(tileSet, tileTypes);
                                 return b;
                             })
                     ).orElseThrow(() ->
@@ -79,6 +85,54 @@ public class SimulatorParser {
         }
 
         return simulator;
+    }
+
+    public TileSet parseTileSet(NodeList nodeList) {
+        TileSet tileSet = null;
+        int length = nodeList.getLength();
+        for (int i=0; i<length; i++) {
+            Node n = nodeList.item(i);
+            if (n.getNodeType() == Node.ELEMENT_NODE) {
+                String tagName = n.getNodeName();
+                if (tagName.equals("tileSet")) {
+                    tileSet = getAttribute(n, "image").flatMap(image ->
+                        getIntAttribute(n, "tileNbWidth").flatMap(tileNbWidth ->
+                            getIntAttribute(n, "tileNbHeight").map(tileNbHeight ->
+                                new TileSet(new Image(image), tileNbWidth, tileNbHeight)
+                            )
+                        )
+                    ).orElseThrow(() -> new RuntimeException("TileSet invalid"));
+                }
+            }
+        }
+
+        return tileSet;
+    }
+
+    public List<TileType> parseTileTypes(NodeList nodeList) {
+        List<TileType> tileTypeList = new ArrayList<>();
+
+        int length = nodeList.getLength();
+        for (int i=0; i<length; i++) {
+            Node n = nodeList.item(i);
+            if (n.getNodeType() == Node.ELEMENT_NODE) {
+                String tagName = n.getNodeName();
+                if (tagName.equals("tileTypes")) {
+                    tileTypeList = this.<TileType>parseListNodes(n.getChildNodes(), "tileType", node -> getIntAttribute(node, "value").flatMap(value ->
+                        getAttribute(node, "valueOnTileSet").map(valueOnTileSet -> valueOnTileSet.split(",")).map(valueOnTileSet -> {
+                            int [] valueOnTileSets = new int[valueOnTileSet.length];
+                            for (int j = 0; j < valueOnTileSet.length; j++) {
+                                valueOnTileSets[j] = Integer.valueOf(valueOnTileSet[j]);
+                            }
+                            boolean isWall = getAttribute(node, "isWall").map(w -> w.equals("true")).orElse(false);
+                            return new TileType(value, valueOnTileSets, isWall);
+                        })
+                    ).orElseThrow(() -> new RuntimeException("tileType invalid")));
+                }
+            }
+        }
+
+        return tileTypeList;
     }
 
     public <T> List<T> parseListNodes(NodeList nodeList, String balise, Utils.Function<Node, T> f) {
