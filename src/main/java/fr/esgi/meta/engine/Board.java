@@ -58,8 +58,8 @@ public abstract class Board extends Graph {
                     new Edge(zones[i][j], zones[i][j + 1], 1.0);
 
 
-                if(i + 1 < width && j + 1 < height)
-                    new Edge(zones[i][j], zones[i + 1][j + 1], 1.0);
+                //if(i + 1 < width && j + 1 < height)
+                //    new Edge(zones[i][j], zones[i + 1][j + 1], 1.0);
             }
         }
     }

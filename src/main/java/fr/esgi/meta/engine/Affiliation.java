@@ -27,7 +27,7 @@ public class Affiliation {
             case "enemy":
                 t = -1;
                 break;
-            case "allies":
+            case "ally":
                 t = 1;
                 break;
             case "neutral":

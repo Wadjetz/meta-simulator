@@ -39,6 +39,20 @@
     </factions>
     <affiliations>
         <affiliation type="enemy" faction="zombies" targetfaction="survivors" />
+        <affiliation type="enemy" faction="zombies" targetfaction="cannibals" />
+        <affiliation type="enemy" faction="zombies" targetfaction="bandits" />
+
+        <affiliation type="enemy" faction="survivors" targetfaction="zombies" />
+        <affiliation type="enemy" faction="survivors" targetfaction="cannibals" />
+        <affiliation type="enemy" faction="survivors" targetfaction="bandits" />
+
+        <affiliation type="enemy" faction="cannibals" targetfaction="survivors" />
+        <affiliation type="enemy" faction="cannibals" targetfaction="zombies" />
+        <affiliation type="ally" faction="cannibals" targetfaction="bandits" />
+
+        <affiliation type="enemy" faction="bandits" targetfaction="survivors" />
+        <affiliation type="enemy" faction="bandits" targetfaction="zombies" />
+        <affiliation type="ally" faction="bandits" targetfaction="cannibals" />
     </affiliations>
     <board width="20" height="20">
 

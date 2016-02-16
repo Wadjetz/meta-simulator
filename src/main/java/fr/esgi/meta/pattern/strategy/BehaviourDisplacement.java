@@ -14,6 +14,8 @@ public interface BehaviourDisplacement {
     int getDistancePerTurn();
 
     default void displace(Unit me, Board board, Zone currentZone) {
+        System.out.println(me.toString());
+
         // Get the nearest enemy
         List<Vertex> nearestEnemyPath = board.findNearest(currentZone, vertex -> {
             for(Edge e : vertex.getAdjacencies()) {
@@ -27,11 +29,6 @@ public interface BehaviourDisplacement {
 
         if(nearestEnemyPath == null) // No enemy
             return;
-
-        //System.out.println("path : ");
-        //for(Vertex vertex : nearestEnemyPath) {
-        //    System.out.println(vertex);
-        //}
 
         Zone toGo = currentZone;
         int i = getDistancePerTurn(); // Number of iteration

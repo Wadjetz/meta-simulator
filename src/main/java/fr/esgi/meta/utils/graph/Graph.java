@@ -38,9 +38,6 @@ public class Graph {
             for(Edge e : current.vertex.getAdjacencies()) {
                 Vertex target = e.getOtherSide(current.vertex);
 
-                if(vertexPredicate.test(target))
-                    System.out.println(vertexPredicate);
-
                 if(!target.isEmpty() || verticesTraveled.contains(target))
                     continue; // Ignore the vertex
 
@@ -58,6 +55,9 @@ public class Graph {
         // Reconstruct the path
         List<Vertex> shortestPathVertices = new ArrayList<>();
         Path shortestPath = vertexPriorityQueue.pollFirst();
+
+        System.out.println("Target targeted : ");
+        System.out.println(shortestPath.vertex.toString());
 
         while(shortestPath != null) {
             shortestPathVertices.add(0, shortestPath.vertex);
