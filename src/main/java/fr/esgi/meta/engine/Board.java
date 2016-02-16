@@ -49,11 +49,17 @@ public abstract class Board extends Graph {
         }
 
         // Create the edges
-        for(int i = 0; i < width - 1; i++) {
-            for(int j = 0; j < height - 1; j++) {
-                new Edge(zones[i][j], zones[i + 1][j], 1.0);
-                new Edge(zones[i][j], zones[i][j + 1], 1.0);
-                new Edge(zones[i][j], zones[i + 1][j], 1.0);
+        for(int i = 0; i < width; i++) {
+            for(int j = 0; j < height; j++) {
+                if(i + 1 < width)
+                    new Edge(zones[i][j], zones[i + 1][j], 1.0);
+
+                if(j + 1 < height)
+                    new Edge(zones[i][j], zones[i][j + 1], 1.0);
+
+
+                if(i + 1 < width && j + 1 < height)
+                    new Edge(zones[i][j], zones[i + 1][j + 1], 1.0);
             }
         }
     }
@@ -75,14 +81,19 @@ public abstract class Board extends Graph {
     @Override
     public String toString() {
         StringJoiner sj = new StringJoiner("");
-        for (int y = 0; y < height; y++) {
+        for (int y = -1; y < height; y++) {
+            sj.add(String.format("%1$3s", y));
             for (int x = 0; x < width; x++) {
-                Zone z = zones[x][y];
-                sj.add("| ");
-                if (z.unit.isPresent()) {
-                    sj.add(z.unit.get().getType().charAt(0) + " ");
+                if(y < 0) {
+                    sj.add(String.format("|%1$3s", x));
                 } else {
-                    sj.add("  ");
+                    Zone z = zones[x][y];
+                    sj.add("| ");
+                    if (z.unit.isPresent()) {
+                        sj.add(z.unit.get().getType().charAt(0) + " ");
+                    } else {
+                        sj.add("  ");
+                    }
                 }
             }
             sj.add("\n");

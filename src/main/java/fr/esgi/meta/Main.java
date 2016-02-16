@@ -10,6 +10,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public class Main {
 
@@ -46,6 +47,12 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         //testGraph();
+
+        Optional<Integer> optional1 = Optional.of(15);
+        Optional<Integer> optional2 = Optional.empty();
+
+        System.out.println(optional1.map(i -> i > 10).orElseGet(() ->  false));
+        System.out.println(optional2.map(i -> i > 10).orElseGet(() ->  false));
 
         System.out.println("Meta Simulation");
         try {

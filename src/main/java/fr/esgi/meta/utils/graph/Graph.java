@@ -1,9 +1,6 @@
 package fr.esgi.meta.utils.graph;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 import java.util.function.Predicate;
 
 /**
@@ -21,26 +18,28 @@ public class Graph {
 
     public List<Vertex> findNearest(Vertex start, Predicate<Vertex> vertexPredicate) {
         // List of path still possibles
-        PriorityQueue<Path> vertexPriorityQueue = new PriorityQueue<>((o1, o2) -> {
+        TreeSet<Path> vertexPriorityQueue = new TreeSet<>((o1, o2) -> {
             if(o1.distance > o2.distance)
                 return 1;
-            else if(o1.distance < o2.distance)
-                return -1;
             else
-                return 0;
+                return -1;
         });
         // List of vertices traveled
         HashSet<Vertex> verticesTraveled = new HashSet<>();
 
         // Start at the first node
         vertexPriorityQueue.add(new Path(start, 0D, null));
+        verticesTraveled.add(start);
 
         // Walk through all the graph
-        while(!vertexPriorityQueue.isEmpty() && !vertexPredicate.test(vertexPriorityQueue.peek().vertex)) {
-            Path current = vertexPriorityQueue.poll();
+        while(!vertexPriorityQueue.isEmpty() && !vertexPredicate.test(vertexPriorityQueue.first().vertex)) {
+            Path current = vertexPriorityQueue.pollFirst();
 
             for(Edge e : current.vertex.getAdjacencies()) {
                 Vertex target = e.getOtherSide(current.vertex);
+
+                if(vertexPredicate.test(target))
+                    System.out.println(vertexPredicate);
 
                 if(!target.isEmpty() || verticesTraveled.contains(target))
                     continue; // Ignore the vertex
@@ -58,7 +57,7 @@ public class Graph {
 
         // Reconstruct the path
         List<Vertex> shortestPathVertices = new ArrayList<>();
-        Path shortestPath = vertexPriorityQueue.poll();
+        Path shortestPath = vertexPriorityQueue.pollFirst();
 
         while(shortestPath != null) {
             shortestPathVertices.add(0, shortestPath.vertex);
@@ -81,6 +80,30 @@ public class Graph {
             this.vertex = vertex;
             this.previous = previous;
             this.distance = distance;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Path path = (Path) o;
+
+            if (Double.compare(path.distance, distance) != 0) return false;
+            if (vertex != null ? !vertex.equals(path.vertex) : path.vertex != null) return false;
+            return previous != null ? previous.equals(path.previous) : path.previous == null;
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result;
+            long temp;
+            result = vertex != null ? vertex.hashCode() : 0;
+            result = 31 * result + (previous != null ? previous.hashCode() : 0);
+            temp = Double.doubleToLongBits(distance);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            return result;
         }
     }
 }

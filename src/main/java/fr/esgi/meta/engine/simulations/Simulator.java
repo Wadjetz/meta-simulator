@@ -69,21 +69,25 @@ public abstract class Simulator {
         List<Unit> allUnits = factions.stream().<Unit>flatMap(f -> f.getUnits().stream()).collect(Collectors.toList());
         board.randomDispatch(allUnits);
 
-        System.out.println("Turn " + turn + " ------------------------------------------------------");
-        System.out.println(board);
+        while(true) {
+            System.out.println("Turn " + turn + " ------------------------------------------------------");
+            System.out.println(board);
 
-        for(Faction faction : factions) {
-            for(Unit unit : faction.getUnits()) {
-                // Move the unit on the board
-                unit.move(board);
+            for(Faction faction : factions) {
+                for(Unit unit : faction.getUnits()) {
+                    // Move the unit on the board
+                    unit.move(board);
 
-                // Attack every other unit in the neighbors zones
-                unit.getNeighborsUnits().forEach(unit::figth);
+                    // Attack every other unit in the neighbors zones
+                    unit.getNeighborsUnits().forEach(unit::figth);
+                }
             }
-        }
 
-        // Enter to continue..
-        br.readLine();
+            // Enter to continue..
+            br.readLine();
+
+            turn++;
+        }
 
 
         //getFactions().get(0).getUnits().get(0).figth(getFactions().get(1).getUnits().get(0));

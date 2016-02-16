@@ -17,7 +17,9 @@ public interface BehaviourDisplacement {
         // Get the nearest enemy
         List<Vertex> nearestEnemyPath = board.findNearest(currentZone, vertex -> {
             for(Edge e : vertex.getAdjacencies()) {
-                if(((Zone) vertex).isEmpty() && me.isEnemyWith(((Zone) vertex).getUnit().get()))
+                Vertex neighbor = e.getOtherSide(vertex);
+
+                if(((Zone) neighbor).getUnit().map(me::isEnemyWith).orElseGet(() ->  false))
                     return true; // Case near an enemy
             }
             return false;
@@ -25,6 +27,11 @@ public interface BehaviourDisplacement {
 
         if(nearestEnemyPath == null) // No enemy
             return;
+
+        //System.out.println("path : ");
+        //for(Vertex vertex : nearestEnemyPath) {
+        //    System.out.println(vertex);
+        //}
 
         Zone toGo = currentZone;
         int i = getDistancePerTurn(); // Number of iteration
@@ -34,11 +41,11 @@ public interface BehaviourDisplacement {
         }
 
         if(!toGo.equals(currentZone)) {
-            System.out.println(me.getName() + " has moved from " + currentZone + " to " + toGo);
+            System.out.println(me.toString() + " has moved from " + currentZone + " to " + toGo);
             currentZone.setUnit(Optional.empty());
             toGo.setUnit(Optional.of(me));
             me.setZone(toGo);
         } else
-            System.out.println(me.getName() + " has not moved");
+            System.out.println(me.toString() + " has not moved at " + currentZone);
     }
 }

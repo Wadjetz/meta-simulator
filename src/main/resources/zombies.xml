@@ -3,7 +3,7 @@
     <factions>
         <faction type="zombies">
             <unit type="zombie" role="leader" name="Zombie Lord"/>
-            <unit type="zombie" role="member" quantity="13" />
+            <unit type="zombie" role="member" name="Zombie" quantity="13" />
         </faction>
         <faction type="survivors">
             <unit type="human" role="leader" name="Rick">
