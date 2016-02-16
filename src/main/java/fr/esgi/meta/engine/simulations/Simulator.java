@@ -119,7 +119,7 @@ public abstract class Simulator implements Observable<Simulator.SimulatorEvent> 
 
             // Sleep waiting for the next step
             try {
-                Thread.sleep(Long.MAX_VALUE);
+                Thread.sleep(5000);
             } catch (InterruptedException ignored) {}
 
             if (isGameOver()) {
