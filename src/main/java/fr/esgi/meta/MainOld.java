@@ -83,6 +83,7 @@ public class MainOld {
         //testGraph();
         // testGraph2();
 
+        // Do NOT use
         System.out.println("Meta Simulation");
         try {
             Simulator simulator = new SimulatorParser().parse("zombies.xml");

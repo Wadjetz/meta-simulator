@@ -30,8 +30,10 @@ public class Main extends Application {
         // Load the engine view
         FXMLLoader fxmlLoader = new FXMLLoader();
         Parent root = fxmlLoader.load(getClass().getResource("/view/main.fxml").openStream());
-        MainController controller = (MainController) fxmlLoader.getController();
-        controller.update(simulator);
+        MainController controller = fxmlLoader.getController();
+
+        // Set the simulator to the view
+        controller.setSimulator(simulator);
 
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root));

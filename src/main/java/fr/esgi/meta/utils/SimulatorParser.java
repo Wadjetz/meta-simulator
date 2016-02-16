@@ -65,19 +65,20 @@ public class SimulatorParser {
                 }
 
                 if (tagName.equals("board")) {
+                    TileSet tileSet = parseTileSet(n.getChildNodes());
+                    List<TileType> tileTypes = parseTileTypes(n.getChildNodes());
+
                     Board board = getIntAttribute(n, "width").flatMap(width ->
                             getIntAttribute(n, "height").map(height -> {
                                 Board b = new BoardFactory().getInstance(simulatorType);
                                 b.setWidth(width);
                                 b.setHeight(height);
-                                b.init();
+                                b.init(tileSet, tileTypes);
                                 return b;
                             })
                     ).orElseThrow(() ->
                             new RuntimeException("Board not found " + n.toString())
                     );
-                    simulator.setTileSet(parseTileSet(n.getChildNodes()));
-                    simulator.setTileTypeList(parseTileTypes(n.getChildNodes()));
                     simulator.setBoard(board);
                 }
             }
@@ -117,7 +118,7 @@ public class SimulatorParser {
             if (n.getNodeType() == Node.ELEMENT_NODE) {
                 String tagName = n.getNodeName();
                 if (tagName.equals("tileTypes")) {
-                    tileTypeList = this.<TileType>parseListNodes(nodeList, "tileType", node -> getIntAttribute(node, "value").flatMap(value ->
+                    tileTypeList = this.<TileType>parseListNodes(n.getChildNodes(), "tileType", node -> getIntAttribute(node, "value").flatMap(value ->
                         getAttribute(node, "valueOnTileSet").map(valueOnTileSet -> valueOnTileSet.split(",")).map(valueOnTileSet -> {
                             int [] valueOnTileSets = new int[valueOnTileSet.length];
                             for (int j = 0; j < valueOnTileSet.length; j++) {
