@@ -1,5 +1,4 @@
 package fr.esgi.meta.engine.simulations;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import fr.esgi.meta.battleship.unit.Boats;
 import fr.esgi.meta.engine.units.Unit;
 import java.io.IOException;
@@ -21,11 +20,12 @@ public class BattleShipSimulator extends Simulator{
 
         System.out.println(name + " simulation run");
 
-        populateMap();
+
 
         List<Unit> allUnits = factions.stream().<Unit>flatMap(f -> f.getUnits().stream()).collect(Collectors.toList());
         board.randomDispatch(allUnits);
         int i=1;
+        populateMap();
         Random rand = new Random();
         while(i>0)
         {
@@ -38,7 +38,8 @@ public class BattleShipSimulator extends Simulator{
                 List<Integer> keys      = new ArrayList<Integer>(axeMap.keySet());
                 if (!keys.isEmpty()) {
                     x = keys.get(rand.nextInt(keys.size()));
-                    y = axeMap.get(x).get(rand.nextInt(axeMap.get(x).size()));
+                    if(axeMap.get(x).size()>0)
+                        y = axeMap.get(x).get(rand.nextInt(axeMap.get(x).size()));
                 }
             }
             else{
@@ -47,7 +48,8 @@ public class BattleShipSimulator extends Simulator{
                 List<Integer> keys2      = new ArrayList<Integer>(allieMap.keySet());
                 if (!keys2.isEmpty()) {
                     x = keys2.get(rand.nextInt(keys2.size()));
-                    y = allieMap.get(x).get(rand.nextInt(allieMap.get(x).size()));
+                    if(allieMap.get(x).size()>0)
+                        y = allieMap.get(x).get(rand.nextInt(allieMap.get(x).size()));
                 }
             }
 
@@ -61,20 +63,7 @@ public class BattleShipSimulator extends Simulator{
                     e.printStackTrace();
                 }
             }
-            else
-            {
-                if(selected == 0)
-                {
-                    axeMap.get(x).remove(axeMap.get(x).indexOf(y));
-                    if (axeMap.get(x).size() == 0)
-                        axeMap.remove(x);
-                }
-                else{
-                    allieMap.get(x).remove(allieMap.get(x).indexOf(y));
-                    if (allieMap.get(x).size() == 0)
-                        allieMap.remove(x);
-                }
-            }
+
             i++;
 
             if (checkAllieLife()) {
@@ -86,9 +75,8 @@ public class BattleShipSimulator extends Simulator{
                 break;
             }
         }
-        System.out.println(board);
+        //System.out.println(board);
 
-        //getFactions().get(0).getUnits().get(0).figth(getFactions().get(1).getUnits().get(0));
     }
 
     private boolean getUnitZone(int abscisse, int ordonnee){
@@ -111,29 +99,30 @@ public class BattleShipSimulator extends Simulator{
 
         if(sangoku.getType().equals("croiseur")) {
             if (vegeta.getType().equals("porte-avions")) {
-
                 System.out.println(sangoku.getType() +" attaque ====> "+vegeta.getType());
-                boolean find = false;
+                boolean find ;
                 int index = indexBoat("fregate", ennemy);
                 trunk = (Boats) factions.get(ennemy).getUnits().get(index);
-                trunk.setLife(trunk.getLife() - sangoku.getDamages());
+
 
                 if (trunk.getLife() <= 0){
                     updateLife(ennemy,"fregate");
                     find = false;
                 }
                 else
-                find = true;
+                {
+                    trunk.setLife(trunk.getLife() - sangoku.getDamages());
+                    find = true;
+                }
 
                 if(!find){
-                    if (vegeta.getLife() <= 0) {
-                        index = indexBoat("porte-avions",ennemy);
-                        Boats modif = (Boats) factions.get(ennemy).getUnits().get(index);
-                        modif.setLife(modif.getLife()-sangoku.getDamages());
-                        if (modif.getLife() <= 0){
-                            updateLife(ennemy,"porte-avions");
-                        }
+                    index = indexBoat("porte-avions",ennemy);
+                    Boats modif = (Boats) factions.get(ennemy).getUnits().get(index);
+                    modif.setLife(modif.getLife()-sangoku.getDamages());
+                    if (modif.getLife() <= 0){
+                        updateLife(ennemy,"porte-avions");
                     }
+
                 }
             } else if (vegeta.getType().equals("fregate")) {
                 System.out.println(sangoku.getType() +" attaque ====> "+vegeta.getType());
@@ -194,27 +183,30 @@ public class BattleShipSimulator extends Simulator{
                 boolean find;
                 int index =indexBoat("fregate", ennemy);
                 trunk = (Boats) factions.get(ennemy).getUnits().get(index);
-                trunk.setLife(trunk.getLife() - sangoku.getDamages());
+
 
                 if (trunk.getLife() <= 0){
                     updateLife(ennemy,"fregate");
                     find = false;
                 }
-                else
+                else {
                     find = true;
+                    trunk.setLife(trunk.getLife() - sangoku.getDamages());
+                }
 
                 if(!find){
-                    if (vegeta.getLife() <= 0) {
+
                         index = indexBoat("porte-avions",ennemy);
                         Boats modif = (Boats) factions.get(ennemy).getUnits().get(index);
                         modif.setLife(modif.getLife()-sangoku.getDamages());
                         if(modif.getLife() <=0){
-                            updateLife(ennemy,"porte-avions");
+                            updateLife(ennemy, "porte-avions");
                         }
                     }
-                }
             }
         }
+        else
+            System.out.println(sangoku.getType() +" attaque ====> dans le vide");
     }
 
     private void populateMap(){
@@ -222,10 +214,14 @@ public class BattleShipSimulator extends Simulator{
             allieMap.put(i, new ArrayList<>());
             axeMap.put(i, new ArrayList<>());
             for (int j = 0; j < getBoard().getWidth()/2; j++) {
-                allieMap.get(i).add(j);
+                boolean find = getUnitZone(i,j);
+                if(find)
+                    allieMap.get(i).add(j);
             }
             for (int k=getBoard().getWidth()/2; k < getBoard().getWidth();k++){
-                axeMap.get(i).add(k);
+                boolean findu = getUnitZone(k,i);
+                if(findu)
+                    axeMap.get(i).add(k);
             }
         }
         for (Unit unit : factions.get(0).getUnits())
@@ -239,11 +235,11 @@ public class BattleShipSimulator extends Simulator{
     }
 
     private void printMap(int turn) throws IOException{
-        System.out.println("Turn " + turn + " ------------------------------------------------------");
+        System.out.println("\n\nTurn " + turn + " ------------------------------------------------------");
         System.out.println(board);
 
         try {
-            Thread.sleep(0);
+            Thread.sleep(400);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -288,5 +284,4 @@ public class BattleShipSimulator extends Simulator{
             return true;
         return false;
     }
-
 }

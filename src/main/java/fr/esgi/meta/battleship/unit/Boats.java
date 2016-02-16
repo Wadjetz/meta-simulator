@@ -24,17 +24,17 @@ public class Boats extends Unit implements Observable {
 
             case "croiseur":
                 this.life = 300;
-                this.damages = 50;
+                this.damages = 90;
                 break;
 
             case "sous-marin":
                 this.life = 450;
-                this.damages = 40;
+                this.damages = 70;
                 break;
 
             case "fregate":
                 this.life = 200;
-                this.damages = 70;
+                this.damages = 100;
                 break;
         }
     }
