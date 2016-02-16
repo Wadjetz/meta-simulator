@@ -85,24 +85,6 @@ public abstract class Simulator {
                 System.out.println(faction.getName() + " Units=" + faction.getUnits().size());
             }
 
-            boolean flag = false;
-            for (Faction faction : factions) {
-                for (Faction others : factions) {
-                    if (faction != others) {
-                        if (faction.getAffiliation(others) == -1) {
-                            flag = true;
-                        }
-                    }
-                }
-            }
-
-            if (!flag) {
-                System.out.println("Game Over");
-                System.out.println("The Winner is");
-                System.out.println(factions.stream().map(Faction::getName).collect(Collectors.toList()));
-                break;
-            }
-
             for(Faction faction : factions) {
                 for(Unit unit : faction.getUnits()) {
                     // Move the unit on the board
@@ -122,6 +104,24 @@ public abstract class Simulator {
             } catch (InterruptedException ignored) {}
 
             turn++;
+
+            boolean flag = false;
+            for (Faction faction : factions) {
+                for (Faction others : factions) {
+                    if (faction != others) {
+                        if (faction.getAffiliation(others) == -1) {
+                            flag = true;
+                        }
+                    }
+                }
+            }
+
+            if (!flag) {
+                System.out.println("Game Over");
+                System.out.println("The Winner is");
+                System.out.println(factions.stream().map(Faction::getName).collect(Collectors.toList()));
+                break;
+            }
         }
     }
 
