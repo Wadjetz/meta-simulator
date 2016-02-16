@@ -10,9 +10,9 @@ public class ZombiesUnitFactory extends Factory<Unit, String> {
     public Unit getInstance(String type) {
         switch (type) {
             case "human":
-                return new Human(type, new DefaultFight(), new DefenseDefault(), new DisplacementHuman());
+                return new Human(type, new DefaultFight(), new DefenseDefault(), new DisplacementHuman(), new AliveUnitState());
             case "zombie":
-                return new Zombie(type, new DefaultFight(), new DefenseDefault(), new DisplacementZombie());
+                return new Zombie(type, new DefaultFight(), new DefenseDefault(), new DisplacementZombie(), new AliveUnitState());
             default:
                 throw new RuntimeException("Unknown Zombies Unit");
         }

@@ -69,6 +69,8 @@ public abstract class Simulator {
         List<Unit> allUnits = factions.stream().<Unit>flatMap(f -> f.getUnits().stream()).collect(Collectors.toList());
         board.randomDispatch(allUnits);
 
+
+
         while(true) {
             System.out.println("Turn " + turn + " ------------------------------------------------------");
             System.out.println(board);
@@ -76,11 +78,30 @@ public abstract class Simulator {
             // Clean dead units
             factions.forEach(Faction::clearDeadUnit);
 
+            factions = factions.stream().filter(f -> f.getUnits().size() != 0).collect(Collectors.toList());
+
             System.out.println("Stats" );
             for(Faction faction : factions) {
                 System.out.println(faction.getName() + " Units=" + faction.getUnits().size());
             }
 
+            boolean flag = false;
+            for (Faction faction : factions) {
+                for (Faction others : factions) {
+                    if (faction != others) {
+                        if (faction.getAffiliation(others) == -1) {
+                            flag = true;
+                        }
+                    }
+                }
+            }
+
+            if (!flag) {
+                System.out.println("Game Over");
+                System.out.println("The Winner is");
+                System.out.println(factions.stream().map(Faction::getName).collect(Collectors.toList()));
+                break;
+            }
 
             for(Faction faction : factions) {
                 for(Unit unit : faction.getUnits()) {

@@ -1,5 +1,6 @@
 package fr.esgi.meta.zombiland.unit;
 
+import fr.esgi.meta.engine.units.UnitState;
 import fr.esgi.meta.pattern.strategy.BehaviourDefense;
 import fr.esgi.meta.pattern.strategy.BehaviourDisplacement;
 import fr.esgi.meta.pattern.strategy.BehaviourFight;
@@ -16,8 +17,8 @@ public abstract class Humanoid extends Unit implements HasInventory {
 
     private List<Item> inventory;
 
-    public Humanoid(String type, BehaviourFight behaviourFight, BehaviourDefense behaviourDefense, BehaviourDisplacement behaviourDisplacement) {
-        super(type, behaviourFight, behaviourDefense, behaviourDisplacement);
+    public Humanoid(String type, BehaviourFight behaviourFight, BehaviourDefense behaviourDefense, BehaviourDisplacement behaviourDisplacement, UnitState unitState) {
+        super(type, behaviourFight, behaviourDefense, behaviourDisplacement, unitState);
     }
 
     @Override
