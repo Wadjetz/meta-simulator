@@ -43,7 +43,7 @@ public class SimulatorParser {
 
                 if (tagName.equals("factions")) {
                     factions = parseFactions(n.getChildNodes(), factionFactory, simulatorType);
-                    System.out.println("Parse Factions " + factions.size());
+                    if (Simulator.DEBUG) System.out.println("Parse Factions " + factions.size());
                     simulator.setFactions(factions);
                 }
 
@@ -136,13 +136,19 @@ public class SimulatorParser {
             Optional<Boolean> isLeader = getAttribute(n, "role").map(role -> {
                 switch (role) {
                     case "leader": return true;
+                    case "member": return false;
                     default: return false;
                 }
             });
             List<Item> items = parseItems(n.getChildNodes(), new ItemFactoryOfFactory().getInstance(simulatorType));
+
+            int life = getIntAttribute(n, "life").orElse(50);
+            Optional<String> name = getAttribute(n, "name");
+
             for (int i = 0; i < quantity; i++) {
                 Unit u = factory.getInstance(type);
-                u.setName(getAttribute(n, "name"));
+                u.setLife(life);
+                u.setName(name);
                 u.setType(type);
                 u.setLeader(isLeader.orElse(false));
                 u.setItems(items);

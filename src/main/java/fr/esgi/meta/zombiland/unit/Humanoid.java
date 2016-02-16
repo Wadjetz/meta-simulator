@@ -12,12 +12,11 @@ import fr.esgi.meta.zombiland.item.Weapon;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Humanoid extends Unit implements HasInventory, HasLife {
+public abstract class Humanoid extends Unit implements HasInventory {
 
-    private String name;
     private List<Item> inventory;
 
-    protected Humanoid(String type, BehaviourFight behaviourFight, BehaviourDefense behaviourDefense, BehaviourDisplacement behaviourDisplacement) {
+    public Humanoid(String type, BehaviourFight behaviourFight, BehaviourDefense behaviourDefense, BehaviourDisplacement behaviourDisplacement) {
         super(type, behaviourFight, behaviourDefense, behaviourDisplacement);
     }
 

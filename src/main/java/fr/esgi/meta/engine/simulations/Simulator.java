@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 
 public abstract class Simulator {
 
+    public static final boolean DEBUG = false;
+
     protected String name;
     protected Board board;
     protected List<Faction> factions;
@@ -73,6 +75,15 @@ public abstract class Simulator {
             System.out.println("Turn " + turn + " ------------------------------------------------------");
             System.out.println(board);
 
+            // Clean dead units
+            factions.forEach(Faction::clearDeadUnit);
+
+            System.out.println("Stats" );
+            for(Faction faction : factions) {
+                System.out.println(faction.getName() + " Units=" + faction.getUnits().size());
+            }
+
+
             for(Faction faction : factions) {
                 for(Unit unit : faction.getUnits()) {
                     // Move the unit on the board
@@ -84,7 +95,15 @@ public abstract class Simulator {
             }
 
             // Enter to continue..
-            br.readLine();
+            //br.readLine();
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+
 
             turn++;
         }
