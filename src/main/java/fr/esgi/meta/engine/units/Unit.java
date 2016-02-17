@@ -1,5 +1,6 @@
 package fr.esgi.meta.engine.units;
 
+import fr.esgi.meta.Logger;
 import fr.esgi.meta.engine.Board;
 import fr.esgi.meta.engine.Faction;
 import fr.esgi.meta.engine.Zone;
@@ -11,6 +12,7 @@ import fr.esgi.meta.pattern.strategy.BehaviourFight;
 import fr.esgi.meta.utils.RandomValueGenerator;
 import fr.esgi.meta.utils.graph.Edge;
 import fr.esgi.meta.utils.graph.Vertex;
+import fr.esgi.meta.utils.logger.LogLevel;
 
 import java.io.Console;
 import java.util.ArrayList;
@@ -119,7 +121,7 @@ public abstract class Unit implements Fighter, Defenser {
     }
 
     @Override
-    public void figth(Unit otherUnit) {
+    public void fight(Unit otherUnit) {
         if(getFaction().getAffiliation(otherUnit.getFaction()) < 0)
             this.behaviourFight.fight(this, otherUnit);
     }
@@ -158,7 +160,7 @@ public abstract class Unit implements Fighter, Defenser {
             life -= damages;
         } else {
             life = 0;
-            System.out.println("DEAD DEAD DEAD DEAD -> " + this);
+            Logger.log(LogLevel.INFO, "Dead -> " + this);
         }
     }
 }

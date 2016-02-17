@@ -1,10 +1,10 @@
 package fr.esgi.meta.engine.factories;
 
-import fr.esgi.meta.battleship.unit.BattleShipItemFactory;
-import fr.esgi.meta.microorganism.MicroorganismItemFactory;
+import fr.esgi.meta.simulation.battleship.item.BattleShipItemFactory;
+import fr.esgi.meta.simulation.microorganism.item.MicroorganismItemFactory;
 import fr.esgi.meta.pattern.factory.Factory;
 import fr.esgi.meta.engine.units.Item;
-import fr.esgi.meta.zombiland.item.ZombiesItemFactory;
+import fr.esgi.meta.simulation.zombiland.item.ZombiesItemFactory;
 
 public class ItemFactoryOfFactory extends Factory<Factory<Item, String>, String> {
 

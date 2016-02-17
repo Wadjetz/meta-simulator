@@ -1,10 +1,12 @@
 package fr.esgi.meta.engine;
 
+import fr.esgi.meta.Logger;
 import fr.esgi.meta.utils.RandomValueGenerator;
 import fr.esgi.meta.utils.graph.Edge;
 import fr.esgi.meta.utils.graph.Graph;
 
 import fr.esgi.meta.engine.units.Unit;
+import fr.esgi.meta.utils.logger.LogLevel;
 import fr.esgi.meta.view.TileSet;
 import fr.esgi.meta.view.TileType;
 
@@ -43,7 +45,7 @@ public abstract class Board extends Graph {
     }
 
     public void init(TileSet tileSet, List<TileType> tileTypes) {
-        System.out.println("Board init width=" + width + " height=" + height);
+        Logger.log(LogLevel.VERBOSE, "Board init width=" + width + " height=" + height);
 
         this.tileSet = tileSet;
         this.tileTypeList = tileTypes;
@@ -57,7 +59,7 @@ public abstract class Board extends Graph {
                 if(tileTypes.size() > 0) {
                     TileType tileType = tileTypes.get(RandomValueGenerator.get(0, tileTypes.size()));
                     zones[i][j].setTileType(tileType.getType());
-                    zones[i][j].setForcedEmpty(tileType.isWall());
+                    zones[i][j].setForcedNotEmpty(tileType.isWall());
                 }
             }
         }
@@ -70,20 +72,21 @@ public abstract class Board extends Graph {
 
                 if(j + 1 < height)
                     new Edge(zones[i][j], zones[i][j + 1], 1.0);
-
-
-                //if(i + 1 < width && j + 1 < height)
-                //    new Edge(zones[i][j], zones[i + 1][j + 1], 1.0);
             }
         }
     }
 
     public void randomDispatch(List<Unit> units) {
-        System.out.println("Board Random Dispatch");
         for (Unit unit : units) {
-            int x = RandomValueGenerator.get(1, getWidth());
-            int y = RandomValueGenerator.get(1, getHeight());
-            getZones()[x][y].setUnit(Optional.of(unit));
+            do {
+                int x = RandomValueGenerator.get(1, getWidth());
+                int y = RandomValueGenerator.get(1, getHeight());
+
+                if(getZones()[x][y].isEmpty()) {
+                    getZones()[x][y].setUnit(Optional.of(unit));
+                    break;
+                }
+            } while(true);
         }
     }
 

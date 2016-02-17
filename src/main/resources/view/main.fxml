@@ -2,15 +2,33 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.canvas.Canvas?>
-
 <?import javafx.scene.control.Button?>
-<GridPane fx:controller="fr.esgi.meta.MainController"
-          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
-    <HBox GridPane.columnIndex="0" GridPane.rowIndex="0">
-        <Canvas fx:id="canvas" width="500" height="500"/>
-        <TextArea fx:id="eventTextArea" editable="false" maxWidth="250">Log des events (TODO)</TextArea>
-    </HBox>
-    <HBox GridPane.columnIndex="0" GridPane.rowIndex="1">
-        <Button text="Tour suivant" onAction="#nextTurn" />
-    </HBox>
-</GridPane>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.geometry.Insets?>
+<BorderPane fx:controller="fr.esgi.meta.controller.MainController" xmlns:fx="http://javafx.com/fxml" >
+    <top>
+        <ToolBar>
+            <Button text="Zombie simulation" onAction="#loadZombieSimulation" />
+            <Button text="Micro Organism simulation" onAction="#loadMicroorganismeSimulation" />
+            <Button text="Battleship simulation" onAction="#loadBattleshipSimulation" />
+        </ToolBar>
+    </top>
+    <center>
+        <GridPane hgap="10" vgap="10" alignment="center" >
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <ScrollPane>
+                    <Canvas fx:id="canvas" width="500" height="500"/>
+                </ScrollPane>
+                <TextArea fx:id="eventTextArea" editable="false" >Log des events</TextArea>
+            </VBox>
+            <HBox GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <padding><Insets top="0" right="10" bottom="10" left="10"/></padding>
+                <Button text="Next turn" onAction="#nextTurn" />
+            </HBox>
+        </GridPane>
+    </center>
+</BorderPane>

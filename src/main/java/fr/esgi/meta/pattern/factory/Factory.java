@@ -8,7 +8,7 @@ package fr.esgi.meta.pattern.factory;
 public abstract class Factory<T, I> {
 
     /**
-     * Create according to the provided informations.
+     * Create according to the provided information
      *
      * @param info Information provided.
      * @return The created element.

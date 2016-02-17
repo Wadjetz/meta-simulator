@@ -3,6 +3,8 @@ package fr.esgi.meta.view;
 import javafx.scene.image.Image;
 
 /**
+ * Tile set, image + info, used in the UI
+ *
  * Created by Vuzi on 16/02/2016.
  */
 public class TileSet {

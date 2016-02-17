@@ -1,10 +1,10 @@
 package fr.esgi.meta.engine.factories;
 
-import fr.esgi.meta.engine.simulations.BattleShipSimulator;
-import fr.esgi.meta.engine.simulations.MicroorganismSimulator;
+import fr.esgi.meta.simulation.battleship.BattleShipSimulator;
+import fr.esgi.meta.simulation.microorganism.MicroorganismSimulator;
 import fr.esgi.meta.pattern.factory.Factory;
 import fr.esgi.meta.engine.simulations.Simulator;
-import fr.esgi.meta.engine.simulations.ZombiesLandSimulator;
+import fr.esgi.meta.simulation.zombiland.ZombiesLandSimulator;
 
 public class SimulatorFactory extends Factory<Simulator, String> {
     @Override

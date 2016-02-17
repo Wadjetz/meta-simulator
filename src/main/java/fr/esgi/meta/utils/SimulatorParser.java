@@ -8,7 +8,7 @@ import fr.esgi.meta.pattern.factory.Factory;
 import fr.esgi.meta.engine.*;
 import fr.esgi.meta.view.TileSet;
 import fr.esgi.meta.view.TileType;
-import fr.esgi.meta.zombiland.item.Weapon;
+import fr.esgi.meta.simulation.zombiland.item.Weapon;
 import javafx.scene.image.Image;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -22,6 +22,9 @@ import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * XML parser for the simulation
+ */
 public class SimulatorParser {
     public Simulator parse(String fileName) throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

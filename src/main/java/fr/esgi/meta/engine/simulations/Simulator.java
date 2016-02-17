@@ -1,9 +1,12 @@
 package fr.esgi.meta.engine.simulations;
 
+import fr.esgi.meta.Logger;
 import fr.esgi.meta.engine.Board;
 import fr.esgi.meta.engine.Faction;
 import fr.esgi.meta.engine.units.Unit;
+import fr.esgi.meta.pattern.observer.Observable;
 import fr.esgi.meta.pattern.observer.Observer;
+import fr.esgi.meta.utils.logger.LogLevel;
 import fr.esgi.meta.view.TileSet;
 import fr.esgi.meta.view.TileType;
 
@@ -12,9 +15,31 @@ import java.util.List;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
-public abstract class Simulator {
+public abstract class Simulator implements Observable<Simulator.SimulatorEvent> {
 
-    List<Observer> observerList = new ArrayList<Observer>();
+    /**
+     * List of observers, called when each turn of the simulation is done.
+     */
+    List<Observer<SimulatorEvent>> observerList = new ArrayList<>();
+
+    @Override
+    public void register(Observer<SimulatorEvent> observer) {
+        observerList.add(observer);
+    }
+
+    @Override
+    public void unregister(Observer<SimulatorEvent> observer) {
+        observerList.remove(observer);
+    }
+
+    @Override
+    public void emit(SimulatorEvent simulatorEvent) {
+        observerList.forEach(simulatorEventObserver -> simulatorEventObserver.update(simulatorEvent));
+    }
+
+    public enum SimulatorEvent {
+        TURN, GAME_OVER
+    }
 
     public static final boolean DEBUG = false;
 
@@ -63,27 +88,18 @@ public abstract class Simulator {
 
     public void run() {
         int turn = 1;
-        System.out.println(name + " simulation run");
-        System.out.println(this);
+        Logger.log(LogLevel.INFO, name + " simulation launched");
+        Logger.log(LogLevel.INFO, this.toString());
 
         List<Unit> allUnits = factions.stream().<Unit>flatMap(f -> f.getUnits().stream()).collect(Collectors.toList());
         board.randomDispatch(allUnits);
 
-
-
         while(true) {
-            System.out.println("Turn " + turn + " ------------------------------------------------------");
-            System.out.println(board);
+            Logger.log(LogLevel.INFO, "Turn " + turn + " ------------------------");
 
             // Clean dead units
             factions.forEach(Faction::clearDeadUnit);
-
             factions = factions.stream().filter(f -> f.getUnits().size() != 0).collect(Collectors.toList());
-
-            System.out.println("Stats" );
-            for(Faction faction : factions) {
-                System.out.println(faction.getName() + " Units=" + faction.getUnits().size());
-            }
 
             for(Faction faction : factions) {
                 for(Unit unit : faction.getUnits()) {
@@ -91,37 +107,30 @@ public abstract class Simulator {
                     unit.move(board);
 
                     // Attack every other unit in the neighbors zones
-                    unit.getNeighborsUnits().forEach(unit::figth);
+                    unit.getNeighborsUnits().forEach(unit::fight);
                 }
             }
 
             // Update every observer
-            observerList.forEach(Observer::update);
+            emit(SimulatorEvent.TURN);
+
+            // Log the current board
+            Logger.log(LogLevel.VERBOSE, board.toString());
 
             // Sleep waiting for the next step
             try {
                 Thread.sleep(Long.MAX_VALUE);
             } catch (InterruptedException ignored) {}
 
-            turn++;
+            if (isGameOver()) {
+                emit(SimulatorEvent.GAME_OVER);
 
-            boolean flag = false;
-            for (Faction faction : factions) {
-                for (Faction others : factions) {
-                    if (faction != others) {
-                        if (faction.getAffiliation(others) == -1) {
-                            flag = true;
-                        }
-                    }
-                }
-            }
-
-            if (!flag) {
-                System.out.println("Game Over");
-                System.out.println("The Winner is");
-                System.out.println(factions.stream().map(Faction::getName).collect(Collectors.toList()));
+                Logger.log(LogLevel.INFO, "Game Over");
+                Logger.log(LogLevel.INFO, "The Winner is : " + factions.stream().map(Faction::getName).collect(Collectors.toList()));
                 break;
             }
+
+            turn++;
         }
     }
 
@@ -139,6 +148,19 @@ public abstract class Simulator {
 
     public void setTileTypeList(List<TileType> tileTypeList) {
         this.tileTypeList = tileTypeList;
+    }
+
+    private boolean isGameOver() {
+        for (Faction faction : factions) {
+            for (Faction others : factions) {
+                if (faction != others) {
+                    if (faction.getAffiliation(others) == -1) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     @Override

@@ -9,7 +9,7 @@ public class Singleton {
 
     private static Singleton instance;
 
-    protected Singleton() {};
+    protected Singleton() {}
 
     public static Singleton getInstance() {
         if(instance == null)

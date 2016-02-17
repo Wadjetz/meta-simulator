@@ -1,5 +1,6 @@
 package fr.esgi.meta;
 
+import fr.esgi.meta.controller.MainController;
 import fr.esgi.meta.engine.simulations.Simulator;
 import fr.esgi.meta.utils.SimulatorParser;
 import javafx.application.Application;
@@ -16,26 +17,13 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Simulator simulator = null;
-
-        // Starts the engine
-        try {
-            simulator = new SimulatorParser().parse("zombies.xml");
-            //simulator.run();
-        } catch (ParserConfigurationException | IOException | SAXException e) {
-            e.printStackTrace();
-            System.exit(-1);
-        }
-
         // Load the engine view
         FXMLLoader fxmlLoader = new FXMLLoader();
         Parent root = fxmlLoader.load(getClass().getResource("/view/main.fxml").openStream());
         MainController controller = fxmlLoader.getController();
+        controller.setStage(primaryStage);
 
-        // Set the simulator to the view
-        controller.setSimulator(simulator);
-
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("Simulator 1.0.0");
         primaryStage.setScene(new Scene(root));
         primaryStage.sizeToScene();
         primaryStage.show();

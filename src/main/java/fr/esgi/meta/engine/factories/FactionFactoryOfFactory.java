@@ -1,11 +1,11 @@
 package fr.esgi.meta.engine.factories;
 
-import fr.esgi.meta.battleship.unit.BattleShipFactory;
-import fr.esgi.meta.microorganism.MicroorganismFactory;
+import fr.esgi.meta.simulation.battleship.unit.BattleShipFactory;
+import fr.esgi.meta.simulation.microorganism.MicroorganismFactory;
 import fr.esgi.meta.pattern.factory.Factory;
 import fr.esgi.meta.pattern.factory.FactoryOfFactory;
 import fr.esgi.meta.engine.Faction;
-import fr.esgi.meta.zombiland.faction.ZombiesLandFactory;
+import fr.esgi.meta.simulation.zombiland.faction.ZombiesLandFactory;
 
 public class FactionFactoryOfFactory extends FactoryOfFactory<Factory<Faction, String>, String> {
     @Override

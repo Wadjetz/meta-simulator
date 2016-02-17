@@ -58,9 +58,6 @@ public class Graph {
         List<Vertex> shortestPathVertices = new ArrayList<>();
         Path shortestPath = vertexPriorityQueue.pollFirst();
 
-        if (Simulator.DEBUG) System.out.println("Target targeted : ");
-        if (Simulator.DEBUG) System.out.println(shortestPath.vertex.toString());
-
         while(shortestPath != null) {
             shortestPathVertices.add(0, shortestPath.vertex);
             shortestPath = shortestPath.previous;

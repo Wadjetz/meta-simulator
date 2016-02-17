@@ -1,10 +1,10 @@
 package fr.esgi.meta.engine.factories;
 
-import fr.esgi.meta.battleship.unit.BattleShipBoard;
+import fr.esgi.meta.simulation.battleship.unit.BattleShipBoard;
 import fr.esgi.meta.engine.Board;
-import fr.esgi.meta.microorganism.MicroorganismBoard;
+import fr.esgi.meta.simulation.microorganism.MicroorganismBoard;
 import fr.esgi.meta.pattern.factory.Factory;
-import fr.esgi.meta.zombiland.ZombieBoard;
+import fr.esgi.meta.simulation.zombiland.ZombieBoard;
 
 public class BoardFactory extends Factory<Board, String> {
 

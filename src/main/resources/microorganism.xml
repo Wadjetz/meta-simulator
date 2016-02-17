@@ -27,22 +27,20 @@
         <affiliation type="enemy" faction="white-globules" targetfaction="virus" />
     </affiliations>
     <board width="10" height="10">
-        <tileSet image="http://server.vuzi.fr/tests/algo/floor.png" tileNbWidth="8" tileNbHeight="8" />
+        <tileSet image="image/organism_floor.png" tileNbWidth="8" tileNbHeight="8" />
         <tileTypes>
             <!-- Empty tiles -->
-            <tileType value="0" valueOnTileSet="16,17,18,19,20,21,22,23" />
+            <tileType value="0" valueOnTileSet="0,1,2,3,4,5" />
             <!-- Empty tiles 2 -->
-            <tileType value="1" valueOnTileSet="16,17,18,19,20,21,22,23" />
+            <tileType value="0" valueOnTileSet="0,1,2,3,4,5" />
             <!-- Empty tiles 3 -->
-            <tileType value="2" valueOnTileSet="16,17,18,19,20,21,22,23" />
+            <tileType value="0" valueOnTileSet="0,1,2,3,4,5" />
             <!-- Empty tiles 4 -->
-            <tileType value="3" valueOnTileSet="16,17,18,19,20,21,22,23" />
+            <tileType value="0" valueOnTileSet="0,1,2,3,4,5" />
             <!-- Empty tiles 5 -->
-            <tileType value="4" valueOnTileSet="16,17,18,19,20,21,22,23" />
+            <tileType value="0" valueOnTileSet="0,1,2,3,4,5" />
             <!-- Object tile -->
-            <tileType value="5" valueOnTileSet="51,52,53,54,55" isWall="true" />
-            <!-- Wall tile -->
-            <!-- <tileType value="3" valueOnTileSet="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16" isWall="true" /> -->
+            <tileType value="5" valueOnTileSet="8,9,10,11" isWall="true" />
         </tileTypes>
     </board>
 </simulation>
