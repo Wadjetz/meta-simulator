@@ -27,7 +27,7 @@ public class BattleShipSimulator extends Simulator implements Observable{
         }
         //System.out.println(board);
 
-        getFactions().get(0).getUnits().get(0).figth(getFactions().get(1).getUnits().get(0));
+        getFactions().get(0).getUnits().get(0).fight(getFactions().get(1).getUnits().get(0));
     }
 
     @Override

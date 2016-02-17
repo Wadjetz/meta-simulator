@@ -1,10 +1,12 @@
 package fr.esgi.meta.engine;
 
+import fr.esgi.meta.Logger;
 import fr.esgi.meta.utils.RandomValueGenerator;
 import fr.esgi.meta.utils.graph.Edge;
 import fr.esgi.meta.utils.graph.Graph;
 
 import fr.esgi.meta.engine.units.Unit;
+import fr.esgi.meta.utils.logger.LogLevel;
 import fr.esgi.meta.view.TileSet;
 import fr.esgi.meta.view.TileType;
 
@@ -42,7 +44,7 @@ public abstract class Board extends Graph {
     }
 
     public void init(TileSet tileSet, List<TileType> tileTypes) {
-        System.out.println("Board init width=" + width + " height=" + height);
+        Logger.log(LogLevel.VERBOSE, "Board init width=" + width + " height=" + height);
 
         this.tileSet = tileSet;
         this.tileTypeList = tileTypes;

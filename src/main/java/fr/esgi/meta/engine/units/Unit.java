@@ -120,7 +120,7 @@ public abstract class Unit implements Fighter, Defenser {
     }
 
     @Override
-    public void figth(Unit otherUnit) {
+    public void fight(Unit otherUnit) {
         if(getFaction().getAffiliation(otherUnit.getFaction()) < 0)
             this.behaviourFight.fight(this, otherUnit);
     }

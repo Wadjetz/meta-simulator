@@ -14,8 +14,6 @@ public class Affiliation {
     }
 
     public static Affiliation create(String type, String factionType, String targetFactionType, List<Faction> factions) {
-        System.out.println("factions" + factions.size());
-        System.out.println(type + " " + factionType + " " + targetFactionType);
         Faction faction = factions.stream().filter(f -> f.getName().equals(factionType)).findFirst().orElseThrow(() ->
             new RuntimeException("Affiliation faction not found: " + factionType)
         );

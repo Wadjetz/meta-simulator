@@ -1,6 +1,8 @@
 package fr.esgi.meta.view;
 
 /**
+ * Tile type, used for the UI
+ *
  * Created by Vuzi on 16/02/2016.
  */
 public class TileType {

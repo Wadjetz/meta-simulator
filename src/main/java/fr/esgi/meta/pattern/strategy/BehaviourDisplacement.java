@@ -1,10 +1,12 @@
 package fr.esgi.meta.pattern.strategy;
 
+import fr.esgi.meta.Logger;
 import fr.esgi.meta.engine.Board;
 import fr.esgi.meta.engine.Zone;
 import fr.esgi.meta.engine.units.Unit;
 import fr.esgi.meta.utils.graph.Edge;
 import fr.esgi.meta.utils.graph.Vertex;
+import fr.esgi.meta.utils.logger.LogLevel;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,11 +40,11 @@ public interface BehaviourDisplacement {
         }
 
         if(!toGo.equals(currentZone)) {
-            System.out.println(me.toString() + " has moved from " + currentZone + " to " + toGo);
+            Logger.log(LogLevel.INFO, me.toString() + " has moved from " + currentZone + " to " + toGo);
             currentZone.setUnit(Optional.empty());
             toGo.setUnit(Optional.of(me));
             me.setZone(toGo);
         } else
-            System.out.println(me.toString() + " has not moved at " + currentZone);
+            Logger.log(LogLevel.INFO, me.toString() + " has not moved at " + currentZone);
     }
 }

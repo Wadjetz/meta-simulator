@@ -1,5 +1,6 @@
 package fr.esgi.meta;
 
+import fr.esgi.meta.controller.MainController;
 import fr.esgi.meta.engine.simulations.Simulator;
 import fr.esgi.meta.utils.SimulatorParser;
 import javafx.application.Application;

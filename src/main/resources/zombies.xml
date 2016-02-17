@@ -54,7 +54,7 @@
         <affiliation type="enemy" faction="bandits" targetfaction="zombies" />
         <affiliation type="ally" faction="bandits" targetfaction="cannibals" />
     </affiliations>
-    <board width="15" height="15" type="random">
+    <board width="20" height="10" type="random">
         <tileSet image="http://server.vuzi.fr/tests/algo/floor.png" tileNbWidth="8" tileNbHeight="8" />
         <tileTypes>
             <!-- Empty tiles -->

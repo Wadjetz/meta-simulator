@@ -37,28 +37,12 @@ public class Vertex {
         return x;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
     public int getY() {
         return y;
     }
 
-    public void setY(int y) {
-        this.y = y;
-    }
-
     public List<Edge> getAdjacencies() {
         return adjacencies;
-    }
-
-    public void setAdjacencies(List<Edge> adjacencies) {
-        this.adjacencies = adjacencies;
-    }
-
-    public double distanceFrom(Vertex otherVertex) {
-        return Math.sqrt(Math.pow(otherVertex.getX() - getX(), 2) + Math.pow(otherVertex.getY() - getY(), 2));
     }
 
     @Override

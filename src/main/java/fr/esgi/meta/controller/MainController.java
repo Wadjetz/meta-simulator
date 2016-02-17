@@ -1,10 +1,13 @@
-package fr.esgi.meta;
+package fr.esgi.meta.controller;
 
+import fr.esgi.meta.Logger;
 import fr.esgi.meta.engine.Board;
 import fr.esgi.meta.engine.Zone;
 import fr.esgi.meta.engine.simulations.Simulator;
 import fr.esgi.meta.engine.units.Unit;
 import fr.esgi.meta.utils.RandomValueGenerator;
+import fr.esgi.meta.utils.logger.CallbackLogger;
+import fr.esgi.meta.utils.logger.LogLevel;
 import fr.esgi.meta.view.TileType;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -17,6 +20,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Controller of the main panel
@@ -33,7 +39,16 @@ public class MainController {
     private Image canvasCache;
 
     @FXML
-    private void initialize() {}
+    private void initialize() {
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+
+        Logger.addLogger(new CallbackLogger(LogLevel.INFO, s -> {
+            Platform.runLater(() -> {
+                eventTextArea.appendText("\n[" + format.format(new Date()) + "] -> " + s);
+            });
+        }));
+
+    }
 
     @FXML
     private void nextTurn() {

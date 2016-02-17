@@ -1,23 +1,23 @@
 package fr.esgi.meta.engine.simulations;
 
+import fr.esgi.meta.Logger;
 import fr.esgi.meta.engine.Board;
 import fr.esgi.meta.engine.Faction;
-import fr.esgi.meta.engine.Zone;
 import fr.esgi.meta.engine.units.Unit;
 import fr.esgi.meta.pattern.observer.Observer;
-import fr.esgi.meta.view.TileSet;
-import fr.esgi.meta.view.TileType;
+import fr.esgi.meta.utils.logger.AbstractLogger;
+import fr.esgi.meta.utils.logger.ConsoleLogger;
+import fr.esgi.meta.utils.logger.LogLevel;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 public abstract class Simulator {
-
+    /**
+     * List of observers, called when each turn of the simulation is done.
+     */
     List<Observer> observerList = new ArrayList<Observer>();
 
     protected String name;
@@ -62,15 +62,15 @@ public abstract class Simulator {
 
     public void run() {
         int turn = 1;
-        System.out.println(name + " simulation run");
-        System.out.println(this);
+        Logger.log(LogLevel.INFO, name + " simulation launched");
+        Logger.log(LogLevel.INFO, this.toString());
 
         List<Unit> allUnits = factions.stream().<Unit>flatMap(f -> f.getUnits().stream()).collect(Collectors.toList());
         board.randomDispatch(allUnits);
 
         while(true) {
-            System.out.println("Turn " + turn + " ------------------------------------------------------");
-            System.out.println(board);
+            Logger.log(LogLevel.INFO, "Turn " + turn + " ------------------------");
+            Logger.log(LogLevel.VERBOSE, board.toString());
 
             for(Faction faction : factions) {
                 for(Unit unit : faction.getUnits()) {
@@ -78,7 +78,7 @@ public abstract class Simulator {
                     unit.move(board);
 
                     // Attack every other unit in the neighbors zones
-                    unit.getNeighborsUnits().forEach(unit::figth);
+                    unit.getNeighborsUnits().forEach(unit::fight);
                 }
             }
 
