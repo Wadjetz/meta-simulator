@@ -14,7 +14,7 @@ public class Zone extends Vertex {
 
     private Optional<Unit> unit = Optional.empty();
     private int tileType;
-    private boolean forcedEmpty = false;
+    private boolean forcedNotEmpty = false;
 
     public Zone(int x, int y) {
         super("" + x + ":" + y, x, y);
@@ -26,7 +26,10 @@ public class Zone extends Vertex {
 
     @Override
     public boolean isEmpty() {
-        return forcedEmpty || !unit.isPresent();
+        if(forcedNotEmpty)
+            return false; // Never accessible
+
+        return !unit.isPresent(); // Accessible if no unit is already present
     }
 
     public void setUnit(Optional<Unit> unit) {
@@ -45,12 +48,12 @@ public class Zone extends Vertex {
         this.tileType = tileType;
     }
 
-    public boolean isForcedEmpty() {
-        return forcedEmpty;
+    public boolean isForcedNotEmpty() {
+        return forcedNotEmpty;
     }
 
-    public void setForcedEmpty(boolean forcedEmpty) {
-        this.forcedEmpty = forcedEmpty;
+    public void setForcedNotEmpty(boolean forcedNotEmpty) {
+        this.forcedNotEmpty = forcedNotEmpty;
     }
 
     @Override

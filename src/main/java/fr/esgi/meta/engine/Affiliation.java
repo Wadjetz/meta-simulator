@@ -18,9 +18,9 @@ public class Affiliation {
             new RuntimeException("Affiliation faction not found: " + factionType)
         );
         Faction targetFaction = factions.stream().filter(f -> f.getName().equals(targetFactionType)).findFirst().orElseThrow(() ->
-                new RuntimeException("Affiliation targetFactionType not found: " + targetFactionType)
+            new RuntimeException("Affiliation targetFactionType not found: " + targetFactionType)
         );
-        double t = 0;
+        double t;
         switch (type) {
             case "enemy":
                 t = -1;

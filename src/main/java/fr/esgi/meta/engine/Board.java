@@ -11,6 +11,7 @@ import fr.esgi.meta.view.TileSet;
 import fr.esgi.meta.view.TileType;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.StringJoiner;
 
 
@@ -58,7 +59,7 @@ public abstract class Board extends Graph {
                 if(tileTypes.size() > 0) {
                     TileType tileType = tileTypes.get(RandomValueGenerator.get(0, tileTypes.size()));
                     zones[i][j].setTileType(tileType.getType());
-                    zones[i][j].setForcedEmpty(tileType.isWall());
+                    zones[i][j].setForcedNotEmpty(tileType.isWall());
                 }
             }
         }
@@ -71,15 +72,23 @@ public abstract class Board extends Graph {
 
                 if(j + 1 < height)
                     new Edge(zones[i][j], zones[i][j + 1], 1.0);
-
-
-                //if(i + 1 < width && j + 1 < height)
-                //    new Edge(zones[i][j], zones[i + 1][j + 1], 1.0);
             }
         }
     }
 
-    public abstract void randomDispatch(List<Unit> units);
+    public void randomDispatch(List<Unit> units) {
+        for (Unit unit : units) {
+            do {
+                int x = RandomValueGenerator.get(1, getWidth());
+                int y = RandomValueGenerator.get(1, getHeight());
+
+                if(getZones()[x][y].isEmpty()) {
+                    getZones()[x][y].setUnit(Optional.of(unit));
+                    break;
+                }
+            } while(true);
+        }
+    }
 
     private String spaces(int n) {
         StringJoiner sj = new StringJoiner("");

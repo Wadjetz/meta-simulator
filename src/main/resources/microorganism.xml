@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<simulation type="microorganism">
+    <factions>
+        <faction type="virus">
+            <unit type="smallpox" role="member" name="Smallpox" quantity="3"/>
+        </faction>
+        <faction type="bacterium">
+            <unit type="flu" role="member" name="H1N1" quantity="3" />
+        </faction>
+        <faction type="cells">
+            <unit type="cellular-tissues" role="member" name="Cellular tissues" quantity="10" />
+        </faction>
+        <faction type="antibiotics">
+            <unit type="penicillin" role="member" name="Penicillin" quantity="3" />
+        </faction>
+        <faction type="white-globules">
+            <unit type="antibody" role="member" name="Antibody" quantity="5" />
+        </faction>
+        <faction type="red-blood-cells">
+            <unit type="blood" role="member" name="Blood" quantity="10" />
+        </faction>
+    </factions>
+    <affiliations>
+        <affiliation type="enemy" faction="virus" targetfaction="cells" />
+        <affiliation type="enemy" faction="bacterium" targetfaction="red-blood-cells" />
+        <affiliation type="enemy" faction="antibiotics" targetfaction="bacterium" />
+        <affiliation type="enemy" faction="white-globules" targetfaction="virus" />
+    </affiliations>
+    <board width="10" height="10">
+        <tileSet image="image/organism_floor.png" tileNbWidth="8" tileNbHeight="8" />
+        <tileTypes>
+            <!-- Empty tiles -->
+            <tileType value="0" valueOnTileSet="0,1,2,3,4,5" />
+            <!-- Empty tiles 2 -->
+            <tileType value="0" valueOnTileSet="0,1,2,3,4,5" />
+            <!-- Empty tiles 3 -->
+            <tileType value="0" valueOnTileSet="0,1,2,3,4,5" />
+            <!-- Empty tiles 4 -->
+            <tileType value="0" valueOnTileSet="0,1,2,3,4,5" />
+            <!-- Empty tiles 5 -->
+            <tileType value="0" valueOnTileSet="0,1,2,3,4,5" />
+            <!-- Object tile -->
+            <tileType value="5" valueOnTileSet="8,9,10,11" isWall="true" />
+        </tileTypes>
+    </board>
+</simulation>

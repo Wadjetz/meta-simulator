@@ -1,5 +1,7 @@
 package fr.esgi.meta.utils.graph;
 
+import fr.esgi.meta.engine.simulations.Simulator;
+
 import java.util.*;
 import java.util.function.Predicate;
 

@@ -1,5 +1,6 @@
 package fr.esgi.meta.engine.units;
 
+import fr.esgi.meta.Logger;
 import fr.esgi.meta.engine.Board;
 import fr.esgi.meta.engine.Faction;
 import fr.esgi.meta.engine.Zone;
@@ -8,9 +9,12 @@ import fr.esgi.meta.pattern.state.State;
 import fr.esgi.meta.pattern.strategy.BehaviourDefense;
 import fr.esgi.meta.pattern.strategy.BehaviourDisplacement;
 import fr.esgi.meta.pattern.strategy.BehaviourFight;
+import fr.esgi.meta.utils.RandomValueGenerator;
 import fr.esgi.meta.utils.graph.Edge;
 import fr.esgi.meta.utils.graph.Vertex;
+import fr.esgi.meta.utils.logger.LogLevel;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,31 +24,36 @@ import java.util.stream.Collectors;
  * Default unit in the simulation.
  */
 public abstract class Unit implements Fighter, Defenser {
-
+    private String type;
+    private Optional<String> name;
+    private Boolean isLeader = false;
+    private int life = 60;
+    private Faction faction;
+    private Zone zone;
+    private UnitState state;
     protected BehaviourFight behaviourFight;
     protected BehaviourDefense behaviourDefense;
     protected BehaviourDisplacement behaviourDisplacement;
 
-    private State state;
-
-    private String type;
-
-    private Faction faction;
-
-    private Zone zone;
-
-    private Optional<String> name;
-
-    private Boolean isLeader = false;
-
-    private int quantity = 1;
-
-    protected Unit(String type, BehaviourFight behaviourFight, BehaviourDefense behaviourDefense,
-                   BehaviourDisplacement behaviourDisplacement) {
+    public Unit(String type, BehaviourFight behaviourFight, BehaviourDefense behaviourDefense,
+                   BehaviourDisplacement behaviourDisplacement, UnitState state) {
         this.type = type;
         this.behaviourFight = behaviourFight;
         this.behaviourDefense = behaviourDefense;
         this.behaviourDisplacement = behaviourDisplacement;
+        this.state = state;
+    }
+
+    public boolean isAlive() {
+        return this.state.isAlive(this);
+    }
+
+    public boolean isDead() {
+        return ! isAlive();
+    }
+
+    public int damages() {
+        return RandomValueGenerator.get(1, 15);
     }
 
     public Zone getZone() {
@@ -71,7 +80,7 @@ public abstract class Unit implements Fighter, Defenser {
 
     @Override
     public String toString() {
-        return "Unit(" + type + ", " + getName() + ", " + faction.getName() + ", " + items.toString() + ", " + getQuantity() + ", " + isLeader() + ")";
+        return "Unit(" + getName().orElse(type) + ", " + faction.getName() + ", items=" + items.size() + ", life=" + life + ")";
     }
 
     public void setItems(List<Item> items) {
@@ -102,14 +111,6 @@ public abstract class Unit implements Fighter, Defenser {
         this.name = name;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
     public boolean isEnemyWith(Unit otherUnit) {
         return getFaction().getAffiliation(otherUnit.getFaction()) < 0;
     }
@@ -129,11 +130,11 @@ public abstract class Unit implements Fighter, Defenser {
         this.behaviourDisplacement.displace(this, board, getZone());
     }
 
-    public State getState() {
+    public UnitState getState() {
         return state;
     }
 
-    public void setState(State state) {
+    public void setState(UnitState state) {
         this.state = state;
     }
 
@@ -144,5 +145,22 @@ public abstract class Unit implements Fighter, Defenser {
                 .filter(z -> z.getUnit().isPresent())
                 .map(z -> z.getUnit().get())
                 .collect(Collectors.toList());
+    }
+
+    public int getLife() {
+        return life;
+    }
+
+    public void setLife(int life) {
+        this.life = life;
+    }
+
+    public void haveDamages(int damages) {
+        if (life > damages) {
+            life -= damages;
+        } else {
+            life = 0;
+            Logger.log(LogLevel.INFO, "Dead -> " + this);
+        }
     }
 }

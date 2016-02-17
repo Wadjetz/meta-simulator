@@ -6,6 +6,7 @@ import fr.esgi.meta.engine.Zone;
 import fr.esgi.meta.engine.simulations.Simulator;
 import fr.esgi.meta.engine.units.Unit;
 import fr.esgi.meta.utils.RandomValueGenerator;
+import fr.esgi.meta.utils.SimulatorParser;
 import fr.esgi.meta.utils.logger.CallbackLogger;
 import fr.esgi.meta.utils.logger.LogLevel;
 import fr.esgi.meta.view.TileType;
@@ -15,12 +16,17 @@ import javafx.fxml.FXML;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -37,6 +43,7 @@ public class MainController {
     private Thread simulatorThread;
 
     private Image canvasCache;
+    private Stage stage;
 
     @FXML
     private void initialize() {
@@ -47,12 +54,12 @@ public class MainController {
                 eventTextArea.appendText("\n[" + format.format(new Date()) + "] -> " + s);
             });
         }));
-
     }
 
     @FXML
     private void nextTurn() {
-        simulatorThread.interrupt();
+        if(simulator != null)
+            simulatorThread.interrupt();
     }
 
     /**
@@ -60,12 +67,16 @@ public class MainController {
      * the background
      */
     private void update() {
+        update(false);
+    }
+
+    private void update(boolean force) {
         Board board = simulator.getBoard();
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         // Draw the canvas
-        if(canvasCache == null) {
+        if(canvasCache == null || force) {
             // No cached canvas, draw everything
             canvas.setWidth(board.getWidth() * board.getTileSet().getTileWidth());
             canvas.setHeight(board.getHeight() * board.getTileSet().getTileHeight());
@@ -107,7 +118,10 @@ public class MainController {
                 if (board.getZones()[x][y].getUnit().isPresent()) {
                     Unit unit = board.getZones()[x][y].getUnit().get();
                     gc.setFont(Font.font("Verdana", 60));
-                    gc.fillText((unit.getType().charAt(0) + "").toUpperCase(), x * board.getTileSet().getTileWidth(), y * board.getTileSet().getTileHeight());
+                    gc.fillText((unit.getType().charAt(0) + "").toUpperCase(), x * board.getTileSet().getTileWidth(), (y + 1) * board.getTileSet().getTileHeight() - 10);
+
+                    gc.setFont(Font.font("Verdana", 10));
+                    gc.fillText(unit.getFaction().getName(), x * board.getTileSet().getTileWidth(), (y + 1) * board.getTileSet().getTileHeight());
                 }
             }
         }
@@ -120,14 +134,66 @@ public class MainController {
      */
     public void setSimulator(Simulator simulator) {
         this.simulator = simulator;
+        
+        update(true);
+        stage.sizeToScene();
 
         // Register as an observer
-        simulator.addObserver(() -> Platform.runLater(this::update));
+        simulator.addObserver((event) -> {
+            if(event.equals(Simulator.SimulatorEvent.TURN))
+                Platform.runLater(this::update);
+            else if(event.equals(Simulator.SimulatorEvent.GAME_OVER))
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Simulation is over");
+                    alert.setHeaderText("The simulation is over !");
+                    alert.setContentText("Every unit on the board is either dead, ally or neutrals between each others");
+
+                    alert.showAndWait();
+                });
+        });
 
         // Launch the simulator
         simulatorThread = new Thread(() -> {
             this.simulator.run();
         });
         simulatorThread.start();
+    }
+
+    @FXML
+    private void loadZombieSimulation() {
+        loadSimulation("zombies.xml");
+    }
+
+    @FXML
+    private void loadMicroorganismeSimulation() {
+        loadSimulation("microorganism.xml");
+    }
+
+    @FXML
+    private void loadBattleshipSimulation() {
+        loadSimulation("battleship.xml");
+    }
+
+    private void loadSimulation(String filename) {
+        Simulator simulator = null;
+
+        try {
+            simulator = new SimulatorParser().parse(filename);
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            e.printStackTrace();
+            Logger.log(LogLevel.ERROR, e.getMessage());
+        }
+
+        // Set the simulator to the view
+        setSimulator(simulator);
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 }

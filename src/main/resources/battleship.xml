@@ -1,36 +1,54 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <simulation type="BattleShip">
     <factions>
-        <faction type="Allie">
-            <unit type="porte-avions" role="leader" name="stallin" life="500">
-                <item type="porte-avions" ammunition="0"/>
+        <faction type="Allies">
+            <unit type="aircraft-carrier" role="leader" name="HMS Eagle" life="500">
+                <item type="aircraft-carrier" ammunition="0"/>
             </unit>
-            <unit type="croiseur" role="member" name="croiseur" quantity="1">
+            <unit type="cruiser" role="member" name="cruiser" quantity="2">
                 <item type="grenade" ammunition="5"/>
             </unit>
-            <unit type="sous-marin" role="leader" name="sous-marin" quantity="1">
-                <item type="torpille" ammunition="5"/>
+            <unit type="submarine" role="member" name="submarine" quantity="1">
+                <item type="torpedo" ammunition="5"/>
             </unit>
-            <unit type="fregate" role="member" name="fregate" quantity="1">
+            <unit type="frigate" role="member" name="frigate" quantity="2">
                 <item type="missile" ammunition="5"/>
             </unit>
         </faction>
-        <faction type="Axe">
-            <unit type="porte-avions" role="leader" name="hitler">
-                <item type="porte-avions" ammunition="0"/>
+        <faction type="Axis">
+            <unit type="aircraft-carrier" role="leader" name="Graf Zeppelin">
+                <item type="aircraft-carrier" ammunition="0"/>
             </unit>
-            <unit type="croiseur" role="member" name="croiseur" quantity="1">
+            <unit type="cruiser" role="member" name="cruiser" quantity="2">
                 <item type="grenade" ammunition="5"/>
             </unit>
-            <unit type="sous-marin" role="leader" name="sous-marin" quantity="1">
-                <item type="torpille" ammunition="5"/>
+            <unit type="submarine" role="member" name="submarine" quantity="1">
+                <item type="torpedo" ammunition="5"/>
             </unit>
-            <unit type="fregate" role="member" name="fregate" quantity="1">
+            <unit type="frigate" role="member" name="frigate" quantity="2">
                 <item type="missile" ammunition="5"/>
             </unit>
         </faction>
     </factions>
+    <affiliations>
+        <affiliation type="enemy" faction="Axis" targetfaction="Allies" />
+        <affiliation type="enemy" faction="Allies" targetfaction="Axis" />
+    </affiliations>
     <board width="20" height="10">
-
+        <tileSet image="image/battleship_floor.png" tileNbWidth="8" tileNbHeight="8" />
+        <tileTypes>
+            <!-- Empty tiles -->
+            <tileType value="0" valueOnTileSet="0,1,2,3,4,5" />
+            <!-- Empty tiles 2 -->
+            <tileType value="0" valueOnTileSet="0,1,2,3,4,5" />
+            <!-- Empty tiles 3 -->
+            <tileType value="0" valueOnTileSet="0,1,2,3,4,5" />
+            <!-- Empty tiles 4 -->
+            <tileType value="0" valueOnTileSet="0,1,2,3,4,5" />
+            <!-- Empty tiles 5 -->
+            <tileType value="0" valueOnTileSet="0,1,2,3,4,5" />
+            <!-- Object tile -->
+            <tileType value="5" valueOnTileSet="8,9,10,11" isWall="true" />
+        </tileTypes>
     </board>
 </simulation>

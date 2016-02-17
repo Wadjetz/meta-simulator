@@ -8,7 +8,7 @@ import fr.esgi.meta.pattern.factory.Factory;
 import fr.esgi.meta.engine.*;
 import fr.esgi.meta.view.TileSet;
 import fr.esgi.meta.view.TileType;
-import fr.esgi.meta.zombiland.item.Weapon;
+import fr.esgi.meta.simulation.zombiland.item.Weapon;
 import javafx.scene.image.Image;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -49,7 +49,7 @@ public class SimulatorParser {
 
                 if (tagName.equals("factions")) {
                     factions = parseFactions(n.getChildNodes(), factionFactory, simulatorType);
-                    System.out.println("Parse Faction " + factions.size());
+                    if (Simulator.DEBUG) System.out.println("Parse Factions " + factions.size());
                     simulator.setFactions(factions);
                 }
 
@@ -64,7 +64,6 @@ public class SimulatorParser {
                             affiliationList.forEach(affiliation -> tmp.put(affiliation.targetFaction, affiliation.type));
                         }
                         faction.setAffiliations(tmp);
-                        System.out.println(aff);
                     }
                 }
 
@@ -140,7 +139,7 @@ public class SimulatorParser {
     }
 
     public <T> List<T> parseListNodes(NodeList nodeList, String balise, Utils.Function<Node, T> f) {
-        ArrayList<T> list = new ArrayList<>();
+        List<T> list = new ArrayList<>();
         int length = nodeList.getLength();
         for (int i=0; i<length; i++) {
             Node n = nodeList.item(i);
@@ -188,24 +187,34 @@ public class SimulatorParser {
     }
 
     public List<Unit> parseUnits(NodeList list, Factory<Unit, String> factory, Faction faction, String simulatorType) {
-        return this.<Unit>parseListNodes(list, "unit", (n) -> getAttribute(n, "type").map(type -> {
-            Unit u = factory.getInstance(type);
-            u.setType(type);
-            u.setName(getAttribute(n, "name"));
-            u.setQuantity(getIntAttribute(n, "quantity").orElse(1));
+        List<List<Unit>> parsedUnits = this.<List<Unit>>parseListNodes(list, "unit", (n) -> getAttribute(n, "type").map(type -> {
+            List<Unit> tmp = new ArrayList<>();
+            int quantity = getIntAttribute(n, "quantity").orElse(1);
             Optional<Boolean> isLeader = getAttribute(n, "role").map(role -> {
                 switch (role) {
                     case "leader": return true;
+                    case "member": return false;
                     default: return false;
                 }
             });
-            u.setLeader(isLeader.orElse(false));
             List<Item> items = parseItems(n.getChildNodes(), new ItemFactoryOfFactory().getInstance(simulatorType));
-            u.setItems(items);
-            u.setFaction(faction);
 
-            return u;
+            int life = getIntAttribute(n, "life").orElse(50);
+            Optional<String> name = getAttribute(n, "name");
+
+            for (int i = 0; i < quantity; i++) {
+                Unit u = factory.getInstance(type);
+                u.setLife(life);
+                u.setName(name);
+                u.setType(type);
+                u.setLeader(isLeader.orElse(false));
+                u.setItems(items);
+                u.setFaction(faction);
+                tmp.add(u);
+            }
+            return tmp;
         }).orElseThrow(() -> new RuntimeException("Invalid Unit " + n.toString())));
+        return parsedUnits.stream().flatMap(Collection::stream).collect(Collectors.toList());
     }
 
     public List<Item> parseItems(NodeList list, Factory<Item, String> factory) {

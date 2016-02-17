@@ -16,14 +16,14 @@ public abstract class Faction {
         this.leader = leader;
     }
 
-    private List<Unit> units;
-    private Map<Faction, Double> affiliations;
+    private List<Unit> units = new ArrayList<>();
+    private Map<Faction, Double> affiliations = new HashMap<>();
 
     public Faction() {
-        units = new ArrayList<>();
     }
 
     public void removeUnit(Unit u) {
+        u.getZone().setUnit(Optional.empty());
         this.units.remove(u);
     }
 
@@ -83,6 +83,11 @@ public abstract class Faction {
     public double getAffiliation(Faction f) {
         Double value = affiliations.get(f);
         return value != null ? value : 0D;
+    }
+
+    public void clearDeadUnit() {
+        List<Unit> deads = units.stream().filter(Unit::isDead).collect(Collectors.toList());
+        deads.forEach(this::removeUnit);
     }
 
     public void setAffiliation(Faction f, double value) {
