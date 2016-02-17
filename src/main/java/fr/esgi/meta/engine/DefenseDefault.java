@@ -10,6 +10,7 @@ public class DefenseDefault implements BehaviourDefense {
     public void defense(Unit me, Unit enemy) {
         int d = enemy.damages();
         me.haveDamages(d);
-        if (Simulator.DEBUG) System.out.println("DefaultDefense " + me + "(" + d + ")" +  " <- " + enemy);
+        //if (Simulator.DEBUG)
+            System.out.println("DefaultDefense " + me + " (" + d + ")" +  " <- " + enemy);
     }
 }

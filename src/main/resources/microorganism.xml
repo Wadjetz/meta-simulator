@@ -2,10 +2,10 @@
 <simulation type="microorganism">
     <factions>
         <faction type="virus">
-            <unit type="smallpox" role="member" name="Smallpox" quantity="3"/>
+            <unit type="smallpox" role="member" name="Smallpox" quantity="4" life="250"/>
         </faction>
         <faction type="bacterium">
-            <unit type="flu" role="member" name="H1N1" quantity="3" />
+            <unit type="flu" role="member" name="H1N1" quantity="5" life="200" />
         </faction>
         <faction type="cells">
             <unit type="cellular-tissues" role="member" name="Cellular tissues" quantity="10" />
@@ -23,8 +23,26 @@
     <affiliations>
         <affiliation type="enemy" faction="virus" targetfaction="cells" />
         <affiliation type="enemy" faction="bacterium" targetfaction="red-blood-cells" />
+
         <affiliation type="enemy" faction="antibiotics" targetfaction="bacterium" />
         <affiliation type="enemy" faction="white-globules" targetfaction="virus" />
+
+        <affiliation type="ally" faction="cells" targetfaction="red-blood-cells" />
+        <affiliation type="ally" faction="cells" targetfaction="white-globules" />
+
+        <affiliation type="ally" faction="red-blood-cells" targetfaction="cells" />
+        <affiliation type="ally" faction="red-blood-cells" targetfaction="white-globules" />
+
+        <affiliation type="ally" faction="white-globules" targetfaction="cells" />
+        <affiliation type="ally" faction="white-globules" targetfaction="red-blood-cells" />
+
+        <affiliation type="ally" faction="bacterium" targetfaction="virus" />
+        <affiliation type="ally" faction="virus" targetfaction="bacterium" />
+
+        <affiliation type="neutral" faction="cells" targetfaction="virus" />
+        <affiliation type="neutral" faction="cells" targetfaction="bacterium" />
+        <affiliation type="neutral" faction="red-blood-cells" targetfaction="virus" />
+        <affiliation type="neutral" faction="red-blood-cells" targetfaction="bacterium" />
     </affiliations>
     <board width="10" height="10">
         <tileSet image="image/organism_floor.png" tileNbWidth="8" tileNbHeight="8" />
